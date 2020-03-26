@@ -79,18 +79,30 @@ class Search extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isVisible: false,
+      isVisibleCheckIn: false,
       chosenCheckInDateTime : '',
+      isVisibleCheckOut: false,
       chosenCheckOutDateTime : '',
+      whichPicker : ''
     };
   }
 
   handlePicker= (datetime) =>{
-    this.setState({
-      isVisible: false,
-      chosenCheckInDateTime : moment(datetime).format('MMMM, Do YYYY HH:mm '),
-      chosenCheckOutDateTime : moment(datetime).format('MMMM, Do YYYY HH:mm '),
-    })
+    const whichPicker= this.state.whichPicker
+    if (whichPicker=='checkin'){
+      this.setState({
+        isVisible: false,
+        chosenCheckInDateTime : moment(datetime).format('MMMM, Do YYYY HH:mm '),
+      })
+      
+    }
+    else{
+      this.setState({
+        isVisible: false,
+        chosenCheckOutDateTime : moment(datetime).format('MMMM, Do YYYY HH:mm '),
+      })
+
+    }
   }
 
   hidePicker= () =>{
@@ -99,10 +111,10 @@ class Search extends React.Component {
     })
   }
 
-  showPicker= () =>{
+  showPicker= (param) =>{
     this.setState({
       isVisible: true,
-      
+      whichPicker: param,
     })
   }
 
@@ -137,12 +149,12 @@ class Search extends React.Component {
             <View>
               {/* to show selected date and time in the field */}
               
-              <TouchableOpacity onPress={this.showPicker} style={styles.search_date_time_button}>
-                <Text>Check-In </Text>
-              </TouchableOpacity>
+              <TouchableOpacity onPress={()=>this.showPicker('checkin')} style={styles.search_date_time_button}>
               <Text>
-                  {this.state.chosenCheckInDateTime}
+                  {this.state.chosenCheckInDateTime || 'Check-in'}
               </Text>
+              </TouchableOpacity>
+              
 
             <DateTimePicker
                 isVisible={this.state.isVisible}
@@ -153,12 +165,12 @@ class Search extends React.Component {
               />
 
 
-              <TouchableOpacity onPress={this.showPicker} style={styles.search_date_time_button}>
-                <Text>Check-Out </Text>
-              </TouchableOpacity>
-              <Text>
-                  {this.state.chosenCheckOutDateTime}
+              <TouchableOpacity onPress={()=>this.showPicker('checkout')} style={styles.search_date_time_button}>
+                <Text>
+                  {this.state.chosenCheckOutDateTime || 'Check-in'}
               </Text>
+              </TouchableOpacity>
+              
               
             <DateTimePicker
                 isVisible={this.state.isVisible}
@@ -178,10 +190,10 @@ class Search extends React.Component {
             </View> */}
           
 
-         {/*  <Button
+          <Button
             title="Search Parking"
             onPress={() => this.props.navigation.navigate('app')}
-          /> */}
+          />
         </View>
       </ImageBackground>
     );
