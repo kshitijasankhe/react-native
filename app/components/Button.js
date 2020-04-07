@@ -17,10 +17,12 @@ class CustomButton extends React.Component {
         onPress={this.props.functionOnClick}
         style={{
           backgroundColor: 'white',
-          color: 'white',
+          color: 'blue',
           height: 30,
           width: 'auto',
-          padding: 10,
+          padding: 30,
+          alignItems: 'center',
+          backgroundColor: '#DDDDDD',
         }}>
         <Text>{this.props.title}</Text>
       </TouchableOpacity>

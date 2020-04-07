@@ -25,7 +25,7 @@ import moment from 'moment';
 import CustomButton from '../components/Button';
 //import CustomTextInput from '../components/TextInput';
 
-class Registration extends React.Component {
+class Host extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,30 +43,7 @@ class Registration extends React.Component {
         source={require('../assets/parkwayRegistration.jpg')}
         style={styles.backgroundImage}>
         <View style={styles.registrationDetails}>
-          <Text style={styles.welcome}>ParkWay</Text>
-
-          <TextInput placeholder="Email" style={styles.input} />
-
-          <TextInput placeholder="First name" style={styles.input} />
-
-          <TextInput placeholder="Last name" style={styles.input} />
-
-          <TextInput
-            secureTextEntry={true}
-            style={styles.input}
-            placeholder="Password"
-          />
-
-          <CustomButton
-            title="Sign Up"
-            functionOnClick={() => {
-              this.props.navigation.navigate('tabScreen');
-            }}></CustomButton>
-
-          {/* <Button
-            title="Sign up"
-            onPress={() => this.props.navigation.navigate('search')}
-          /> */}
+          <Text style={styles.appText}>THIS IS HOST PAGE</Text>
         </View>
       </ImageBackground>
     );
@@ -74,6 +51,12 @@ class Registration extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover', // or 'stretch'
+    opacity: 80,
+  },
+
   registrationDetails: {
     width: '80%',
     height: '80%',
@@ -81,41 +64,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     padding: 20,
-  },
-  search_header: {
-    height: '30%',
-    justifyContent: 'center',
-    paddingHorizontal: 5,
-  },
-  search_input_box: {
-    height: '100%',
-    backgroundColor: 'rgba(255,255,255,.7)',
-    flexDirection: 'row',
-    padding: 5,
-    alignItems: 'center',
-  },
-  search_icon: {
-    fontSize: 30,
-  },
-
-  search_check_in_check_out_container: {
-    height: '10%',
-    width: '100%',
-    backgroundColor: 'rgba(255,255,255,.7)',
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-  },
-
-  search_check_in_check_out_sub_container: {
-    flex: 1,
-  },
-
-  backgroundImage: {
-    flex: 1,
-    resizeMode: 'cover', // or 'stretch'
-    opacity: 80,
   },
 
   container: {
@@ -130,6 +78,13 @@ const styles = StyleSheet.create({
 
   welcome: {
     fontSize: 50,
+    textAlign: 'center',
+    margin: 10,
+    color: 'rgba(69,145,130,10)',
+  },
+
+  appText: {
+    fontSize: 20,
     textAlign: 'center',
     margin: 10,
     color: 'rgba(69,145,130,10)',
@@ -180,4 +135,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Registration;
+export default Host;
