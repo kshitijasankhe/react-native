@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   createBottomTabNavigator,
   createStackNavigator,
@@ -6,13 +7,16 @@ import {
   Text,
   createAppContainer,
 } from 'react-navigation';
+
+import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
+
+import Icon from 'react-native-vector-icons/Ionicons';
+
+import Host from './screen/Host';
+import Profile from './screen/Profile';
 import Registration from './screen/Registration';
 import Search from './screen/Search';
 import Welcome from './screen/WelcomePage';
-import Host from './screen/Host';
-import Profile from './screen/Profile';
-import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 /* const bottomTab2 = createMaterialBottomTabNavigator(
   {
@@ -28,27 +32,23 @@ import Icon from 'react-native-vector-icons/Ionicons';
   },
 ); */
 
-const TabNavigator = createMaterialBottomTabNavigator(
+const TabNavigator = createBottomTabNavigator(
   {
     search: {
-      screen: Search,
+      screen: Registration,
       navigationOptions: {
         tabBarLabel: 'Search',
         tabBarIcon: ({tintColor}) => (
-          <View>
-            <Icon style={[{color: tintColor}]} size={25} name={'ios-search'} />
-          </View>
+          <Icon style={[{color: tintColor}]} size={25} name={'ios-search'} />
         ),
       },
     },
     profile: {
-      screen: Profile,
+      screen: Welcome,
       navigationOptions: {
         tabBarLabel: 'Profile',
         tabBarIcon: ({tintColor}) => (
-          <View>
-            <Icon style={[{color: tintColor}]} size={25} name={'ios-person'} />
-          </View>
+          <Icon style={[{color: tintColor}]} size={25} name={'ios-person'} />
         ),
         activeColor: '#f60c0d',
         inactiveColor: '#f65a22',
@@ -57,13 +57,11 @@ const TabNavigator = createMaterialBottomTabNavigator(
     },
 
     host: {
-      screen: Host,
+      screen: Registration,
       navigationOptions: {
         tabBarLabel: 'Host',
         tabBarIcon: ({tintColor}) => (
-          <View>
-            <Icon style={[{color: tintColor}]} size={25} name={'ios-person'} />
-          </View>
+          <Icon style={[{color: tintColor}]} size={25} name={'ios-person'} />
         ),
       },
     },
@@ -77,7 +75,6 @@ const TabNavigator = createMaterialBottomTabNavigator(
 );
 
 //export default createAppContainer(TabNavigator);
-export default TabNavigator;
 
 const stack = createStackNavigator(
   {
@@ -87,8 +84,8 @@ const stack = createStackNavigator(
     tabScreen: {screen: TabNavigator},
   },
   {
-    initialRouteName: 'welcome',
+    initialRouteName: 'tabScreen',
   },
 );
-
+export default stack;
 //export default stack;
