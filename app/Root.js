@@ -13,7 +13,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Host from './screen/Host';
 import Profile from './screen/Profile';
 import Registration from './screen/Registration';
+import Login from './screen/Login';
 import Search from './screen/Search';
+import Booking from './screen/Booking';
 import Welcome from './screen/WelcomePage';
 
 /* const bottomTab2 = createMaterialBottomTabNavigator(
@@ -33,7 +35,7 @@ import Welcome from './screen/WelcomePage';
 const TabNavigator = createBottomTabNavigator(
   {
     search: {
-      screen: Registration,
+      screen: Search,
       navigationOptions: {
         tabBarLabel: 'Search',
         tabBarIcon: ({tintColor}) => (
@@ -42,7 +44,7 @@ const TabNavigator = createBottomTabNavigator(
       },
     },
     profile: {
-      screen: Welcome,
+      screen: Profile,
       navigationOptions: {
         tabBarLabel: 'Profile',
         tabBarIcon: ({tintColor}) => (
@@ -55,7 +57,7 @@ const TabNavigator = createBottomTabNavigator(
     },
 
     host: {
-      screen: Registration,
+      screen: Host,
       navigationOptions: {
         tabBarLabel: 'Host',
         tabBarIcon: ({tintColor}) => (
@@ -78,11 +80,13 @@ const stack = createStackNavigator(
   {
     welcome: {screen: Welcome},
     registration: {screen: Registration},
+    login: {screen: Login},
     search: {screen: Search},
+    booking: {screen: Booking},
     tabScreen: {screen: TabNavigator},
   },
   {
-    initialRouteName: 'tabScreen',
+    initialRouteName: 'welcome',
   },
 );
 export default stack;

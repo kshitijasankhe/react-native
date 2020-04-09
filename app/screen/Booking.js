@@ -25,42 +25,25 @@ import moment from 'moment';
 import CustomButton from '../components/Button';
 //import CustomTextInput from '../components/TextInput';
 
-class Welcome extends React.Component {
+class Booking extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      showDisplay: false,
+      count: 0,
+      color: 'red',
+      value: 'Enter required Data',
+    };
   }
 
   render() {
+    const count = this.state.count;
     return (
       <ImageBackground
         source={require('../assets/parkwayRegistration.jpg')}
         style={styles.backgroundImage}>
         <View style={styles.registrationDetails}>
-          <Text style={styles.welcome}>ParkWay</Text>
-
-          <Text style={styles.appText}>
-            Sign up and rent a parking spot anywhere
-          </Text>
-
-          <CustomButton
-            title="Sign Up"
-            functionOnClick={() => {
-              this.props.navigation.navigate('registration');
-            }}></CustomButton>
-
-          <Text style={styles.appText}>Already a member?</Text>
-
-          <CustomButton
-            title="Log In"
-            functionOnClick={() => {
-              this.props.navigation.navigate('login');
-            }}></CustomButton>
-
-          {/* <Button
-            title="Sign up"
-            onPress={() => this.props.navigation.navigate('search')}
-          /> */}
+          <Text style={styles.appText}>THIS IS BOOKING PAGE</Text>
         </View>
       </ImageBackground>
     );
@@ -152,4 +135,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Welcome;
+export default Booking;

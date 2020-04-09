@@ -60,6 +60,7 @@ class Registration extends React.Component {
           <CustomButton
             title="Sign Up"
             functionOnClick={() => {
+              this.props.navigation.navigate('search');
               this.props.navigation.navigate('tabScreen');
             }}></CustomButton>
 

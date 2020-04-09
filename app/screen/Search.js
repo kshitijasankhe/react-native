@@ -18,22 +18,12 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import {
-  createAppContainer,
-  createStackNavigator,
-  createBottomTabNavigator,
-} from 'react-navigation';
-
+import {createAppContainer, createStackNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
-
-import {NavigationActions} from 'react-navigation';
 //import { TouchableOpacity } from 'react-native-gesture-handler';
 //import { createStackNavigator } from 'react-navigation-stack';
-
-import Host from './Host';
-import Profile from './Profile';
 
 class Search extends React.Component {
   constructor(props) {
@@ -128,7 +118,8 @@ class Search extends React.Component {
 
           <Button
             title="Search Parking"
-            onPress={() => this.props.navigation.navigate('registration')}
+            onPress={() => this.props.navigation.navigate('booking')}
+            //onPress={() => this.props.navigation.navigate('tabScreen')}
           />
         </View>
       </ImageBackground>
@@ -242,64 +233,5 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
 });
-
-//export default Search;
-
-/* {
-  search: {
-    screen: Search,
-    navigationOptions: {
-      tabBarLable: 'Search',
-      activeColor: 'rgba(69,145,130,10)',
-      inactiveColor: '#000000',
-      barStyle: {backgroundColor: '#67baf6'},
-      tabBarIcon: () => (
-        <View>
-          <Icon name="ios-search" size={25} style={{color: '#ff0000'}} />
-        </View>
-      ),
-    },
-  },
-  host: {
-    screen: Host,
-    navigationOptions: {
-      tabBarLable: 'Host',
-      activeColor: 'rgba(69,145,130,10)',
-      inactiveColor: '#000000',
-      barStyle: {backgroundColor: '#67baf6'},
-      tabBarIcon: () => (
-        <View>
-          <Icon name="person" size={25} style={{color: '#ff0000'}} />
-        </View>
-      ),
-    },
-  },
-
-  profile: {
-    screen: Profile,
-    navigationOptions: {
-      tabBarLable: 'Profile',
-      activeColor: 'rgba(69,145,130,10)',
-      inactiveColor: '#000000',
-      barStyle: {backgroundColor: '#67baf6'},
-      tabBarIcon: () => (
-        <View>
-          <Icon name="person" size={25} style={{color: '#ff0000'}} />
-        </View>
-      ),
-    },
-  },
-} */
-
-/* const TabNavigator = createMaterialBottomTabNavigator();
-
-function createMaterialBottomTabNavigator() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Search" component={Search} />
-      <Tab.Screen name="Profile" component={Profile} />
-    </Tab.Navigator>
-  );
-} */
 
 export default Search;
