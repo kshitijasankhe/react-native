@@ -37,7 +37,7 @@ class Search extends React.Component {
     };
   }
 
-  handlePicker = (datetime) => {
+  handlePicker = datetime => {
     const whichPicker = this.state.whichPicker;
     if (whichPicker == 'checkin') {
       this.setState({
@@ -58,7 +58,7 @@ class Search extends React.Component {
     });
   };
 
-  showPicker = (param) => {
+  showPicker = param => {
     this.setState({
       isVisible: true,
       whichPicker: param,
@@ -104,7 +104,7 @@ class Search extends React.Component {
             <TouchableOpacity
               onPress={() => this.showPicker('checkout')}
               style={styles.search_date_time_button}>
-              <Text>{this.state.chosenCheckOutDateTime || 'Check-in'}</Text>
+              <Text>{this.state.chosenCheckOutDateTime || 'Check-out'}</Text>
             </TouchableOpacity>
 
             <DateTimePicker

@@ -8,6 +8,7 @@ import {
   ImageBackground,
   Button,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 
 import {
@@ -29,24 +30,54 @@ class Booking extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showDisplay: false,
-      count: 0,
-      color: 'red',
-      value: 'Enter required Data',
+      isLoading: true,
+      dataSource: null,
     };
   }
 
+  componentDidMount() {
+    return fetch('https://5e991ed75eabe7001681c770.mockapi.io/spotSearch')
+      .then(response => response.json())
+      .then(responseJson => {
+        this.setState({
+          isLoading: false,
+          dataSource: responseJson,
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   render() {
-    const count = this.state.count;
-    return (
-      <ImageBackground
-        source={require('../assets/parkwayRegistration.jpg')}
-        style={styles.backgroundImage}>
+    if (this.state.isLoading) {
+      return (
         <View style={styles.registrationDetails}>
-          <Text style={styles.appText}>THIS IS BOOKING PAGE</Text>
+          <ActivityIndicator size="large" color="red" />
         </View>
-      </ImageBackground>
-    );
+      );
+    } else {
+      console.log('data', this.state.dataSource);
+      const {result} = this.state.dataSource;
+
+      return (
+        <ImageBackground
+          source={require('../assets/parkwayRegistration.jpg')}
+          style={styles.backgroundImage}>
+          <View style={[styles.registrationDetails, {flexDirection: 'column'}]}>
+            {result.map(item => {
+              return (
+                <View style={{flexDirection: 'row'}}>
+                  <Text>{item.address}</Text>
+                  <Text>{item.spotName}</Text>
+                  <Text>{item.price}</Text>
+                </View>
+              );
+            })}
+          </View>
+        </ImageBackground>
+      );
+    }
   }
 }
 
@@ -88,50 +119,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
     color: 'rgba(69,145,130,10)',
-  },
-  input: {
-    marginLeft: 20,
-    marginRight: 20,
-    textAlign: 'center',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: 'rgba(69,145,130,10)',
-  },
-  search_date_time_button: {
-    width: '50%',
-    height: '30%',
-    textAlign: 'center',
-    borderRadius: 30,
-    borderWidth: 1,
-    borderColor: 'rgba(69,145,130,10)',
-    justifyContent: 'center',
-    paddingHorizontal: 5,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
   },
 });
 
