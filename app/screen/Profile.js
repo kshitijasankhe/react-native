@@ -1,137 +1,167 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
-  View,
   Text,
-  TextInput,
+  View,
   Image,
-  ImageBackground,
-  Button,
+  TextInput,
   TouchableOpacity,
+  ImageBackground,
 } from 'react-native';
+import {Icon} from 'react-native-elements';
+import PropTypes from 'prop-types';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-import {createAppContainer, createStackNavigator} from 'react-navigation';
-import Icon from 'react-native-vector-icons/Ionicons';
-import DateTimePicker from 'react-native-modal-datetime-picker';
-import moment from 'moment';
-import CustomButton from '../components/Button';
-//import CustomTextInput from '../components/TextInput';
-
-class Profile extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showDisplay: false,
-      count: 0,
-      color: 'red',
-      value: 'Enter required Data',
-    };
-  }
-
+class Profile extends Component {
   render() {
-    const count = this.state.count;
     return (
-      <ImageBackground
-        source={require('../assets/parkwayRegistration.jpg')}
-        style={styles.backgroundImage}>
-        <View style={styles.registrationDetails}>
-          <Text style={styles.appText}>THIS IS PROFILE PAGE</Text>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <ImageBackground
+            style={styles.backgroundImage}
+            source={require('../assets/car2.jpg')}>
+            <View style={styles.headerContent}>
+              <Image
+                style={styles.avatar}
+                source={require('../assets/user.png')}
+              />
+
+              <Text style={styles.name}>Ajay Deshmukh </Text>
+              <Text style={styles.userInfo}>adeshmukh@scu.edu </Text>
+              <Text style={styles.userInfo}>California </Text>
+            </View>
+          </ImageBackground>
         </View>
-      </ImageBackground>
+
+        <View style={styles.body}>
+          <View style={styles.item}>
+            <View style={styles.iconContent}>
+              <Image
+                style={styles.icon}
+                source={require('../assets/details.png')}
+              />
+            </View>
+            <View style={styles.infoContent}>
+              <Text style={styles.info}>Personal Details</Text>
+            </View>
+          </View>
+
+          <View style={styles.item}>
+            <View style={styles.iconContent}>
+              <Image
+                style={styles.icon}
+                source={require('../assets/wallet.png')}
+              />
+            </View>
+            <View style={styles.infoContent}>
+              <Text style={styles.info}>Wallet</Text>
+            </View>
+          </View>
+
+          <View style={styles.item}>
+            <View style={styles.iconContent}>
+              <Image
+                style={styles.icon}
+                source={require('../assets/fav.png')}
+              />
+            </View>
+            <View style={styles.infoContent}>
+              <Text style={styles.info}>Favorites</Text>
+            </View>
+          </View>
+
+          <View style={styles.item}>
+            <View style={styles.iconContent}>
+              <Image
+                style={styles.icon}
+                source={require('../assets/faq.png')}
+              />
+            </View>
+            <View style={styles.infoContent}>
+              <Text style={styles.info}>How ParkWay Works</Text>
+            </View>
+          </View>
+
+          <View style={styles.item}>
+            <View style={styles.iconContent}>
+              <Image
+                style={styles.icon}
+                source={require('../assets/support.png')}
+              />
+            </View>
+            <View style={styles.infoContent}>
+              <Text style={styles.info}>Support</Text>
+            </View>
+          </View>
+        </View>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+
+    //backgroundColor: "#8cc2c2",
+  },
+  headerContent: {
+    padding: 10,
+    //alignItems: 'center',
+    flexDirection: 'column',
+  },
   backgroundImage: {
-    flex: 1,
-    resizeMode: 'cover', // or 'stretch'
-    opacity: 80,
+    width: '100%',
+    height: '100%',
+    //justifyContent: "center",
+    //alignItems: "center",
+    opacity: 0.7,
   },
-
-  registrationDetails: {
-    width: '80%',
-    height: '80%',
-    backgroundColor: 'rgba(255,255,255,.7)',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    padding: 20,
+  avatar: {
+    width: 65,
+    height: 65,
+    borderRadius: 31.5,
+    borderWidth: 2,
+    //borderColor: "white",
+    marginBottom: 5,
   },
-
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-
-  welcome: {
-    fontSize: 50,
-    textAlign: 'center',
-    margin: 10,
-    color: 'rgba(69,145,130,10)',
-  },
-
-  appText: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-    color: 'rgba(69,145,130,10)',
-  },
-  input: {
-    marginLeft: 20,
-    marginRight: 20,
-    textAlign: 'center',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: 'rgba(69,145,130,10)',
-  },
-  search_date_time_button: {
-    width: '50%',
-    height: '30%',
-    textAlign: 'center',
-    borderRadius: 30,
-    borderWidth: 1,
-    borderColor: 'rgba(69,145,130,10)',
-    justifyContent: 'center',
-    paddingHorizontal: 5,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
+  name: {
+    fontSize: 22,
+    color: 'black',
     fontWeight: '600',
-    color: Colors.black,
   },
-  sectionDescription: {
-    marginTop: 8,
+  userInfo: {
+    fontSize: 16,
+    color: 'black',
+    fontWeight: '600',
+  },
+  body: {
+    backgroundColor: '#8cc2c2',
+    height: '90%',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    padding: 10,
+  },
+  item: {
+    flexDirection: 'row',
+  },
+  infoContent: {
+    flex: 1,
+    alignItems: 'flex-start',
+    paddingLeft: 5,
+  },
+  iconContent: {
+    alignItems: 'flex-end',
+    paddingRight: 5,
+  },
+  icon: {
+    width: 30,
+    height: 30,
+    marginTop: 20,
+  },
+  info: {
     fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+    marginTop: 20,
+    color: 'black',
   },
 });
 

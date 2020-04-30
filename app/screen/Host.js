@@ -1,137 +1,105 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
-  View,
   Text,
+  View,
+  YellowBox,
+  CheckBox,
   TextInput,
-  Image,
-  ImageBackground,
   Button,
-  TouchableOpacity,
+  ImageBackground,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-import {createAppContainer, createStackNavigator} from 'react-navigation';
-import Icon from 'react-native-vector-icons/Ionicons';
-import DateTimePicker from 'react-native-modal-datetime-picker';
-import moment from 'moment';
-import CustomButton from '../components/Button';
-//import CustomTextInput from '../components/TextInput';
-
 class Host extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showDisplay: false,
-      count: 0,
-      color: 'red',
-      value: 'Enter required Data',
-    };
+  constructor() {
+    super();
+    this.state = {};
+    this.buttonPressed = this.buttonPressed.bind(this);
   }
-
+  buttonPressed() {
+    //console.log(this._username,this._password)
+    //const username= this._username._lastNativeText;
+    //const password= this._password._lastNativeText
+    //console.log(username,password)
+    console.log(this.state.username, this.state.password);
+  }
   render() {
-    const count = this.state.count;
     return (
-      <ImageBackground
-        source={require('../assets/parkwayRegistration.jpg')}
-        style={styles.backgroundImage}>
-        <View style={styles.registrationDetails}>
-          <Text style={styles.appText}>THIS IS HOST PAGE</Text>
-        </View>
-      </ImageBackground>
+      <View style={styles.container}>
+        <ImageBackground
+          source={require('../assets/parkwayRegistration.jpg')}
+          style={styles.image}>
+          <Text>ID Proof</Text>
+          <TextInput
+            defaultValue={this.state.username}
+            onChangeText={text => this.setState({username: text})}
+          />
+          <Text style={{backgroundColor: 'transparent'}}>Bank Name</Text>
+          <TextInput
+            defaultValue={this.state.username}
+            onChangeText={text => this.setState({username: text})}
+          />
+          <Text style={{backgroundColor: 'transparent'}}>
+            Bank Account Number
+          </Text>
+          <TextInput
+            defaultValue={this.state.password}
+            onChangeText={text => this.setState({password: text})}
+          />
+          <Text style={{backgroundColor: 'transparent'}}>Type of Account</Text>
+          <View style={styles.checkboxContainer}>
+            <CheckBox style={styles.checkbox} />
+            <Text style={styles.label}>Saving</Text>
+            <CheckBox
+              center
+              title="Saving"
+              checkedIcon="dot-circle-o"
+              uncheckedIcon="circle-o"
+              checked={this.state.checked}
+              style={styles.checkbox1}
+            />
+
+            <Text style={styles.label}>Checking</Text>
+          </View>
+
+          <Button title={'Submit'} onPress={this.buttonPressed} />
+          <View style={styles.half1} />
+        </ImageBackground>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  backgroundImage: {
-    flex: 1,
-    resizeMode: 'cover', // or 'stretch'
-    opacity: 80,
-  },
-
-  registrationDetails: {
-    width: '80%',
-    height: '80%',
-    backgroundColor: 'rgba(255,255,255,.7)',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-
   container: {
     flex: 1,
+    flexDirection: 'column',
     justifyContent: 'center',
     padding: 20,
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
 
-  welcome: {
-    fontSize: 50,
-    textAlign: 'center',
-    margin: 10,
-    color: 'rgba(69,145,130,10)',
+  text: {
+    color: 'black',
+    fontSize: 30,
+    opacity: 0.99,
   },
-
-  appText: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-    color: 'rgba(69,145,130,10)',
+  image: {
+    flex: 1,
+    resizeMode: 'cover', // or 'stretch',
+    opacity: 0.6,
   },
-  input: {
-    marginLeft: 20,
-    marginRight: 20,
-    textAlign: 'center',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: 'rgba(69,145,130,10)',
+  label: {
+    margin: 8,
   },
-  search_date_time_button: {
-    width: '50%',
-    height: '30%',
-    textAlign: 'center',
-    borderRadius: 30,
-    borderWidth: 1,
-    borderColor: 'rgba(69,145,130,10)',
-    justifyContent: 'center',
-    paddingHorizontal: 5,
+  checkboxContainer: {
+    flexDirection: 'row',
+    marginBottom: 20,
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  checkbox: {
+    alignSelf: 'center',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  checkbox1: {
+    alignSelf: 'center',
   },
 });
 
