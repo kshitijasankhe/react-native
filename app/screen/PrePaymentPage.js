@@ -8,6 +8,8 @@ import {
   ImageBackground,
   Button,
   TouchableOpacity,
+  ActivityIndicator,
+  FlatList,
 } from 'react-native';
 
 import {
@@ -25,57 +27,75 @@ import moment from 'moment';
 import CustomButton from '../components/Button';
 //import CustomTextInput from '../components/TextInput';
 
-class Registration extends React.Component {
+class PrePaymentPage extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      showDisplay: false,
-      count: 0,
-      color: 'red',
-      value: 'Enter required Data',
+      data: [],
+      isLoading: true,
     };
   }
 
+  componentDidMount() {
+    fetch(
+      'https://5e991ed75eabe7001681c770.mockapi.io/search_spot/spotId/calculatePrice',
+    )
+      .then(response => response.json())
+      .then(Responsejson => {
+        this.setState({
+          data: Responsejson.result,
+        });
+      })
+      .catch(error => console.error(error))
+      .finally(() => {
+        this.setState({isLoading: false});
+      });
+  }
+
   render() {
-    const count = this.state.count;
+    const {data, isLoading} = this.state;
+
     return (
-      <ImageBackground
-        source={require('../assets/parkwayRegistration.jpg')}
-        style={styles.backgroundImage}>
-        <View style={styles.registrationDetails}>
-          <Text style={styles.welcome}>ParkWay</Text>
-
-          <TextInput placeholder="Email" style={styles.input} />
-
-          <TextInput placeholder="First name" style={styles.input} />
-
-          <TextInput placeholder="Last name" style={styles.input} />
-
-          <TextInput
-            secureTextEntry={true}
-            style={styles.input}
-            placeholder="Password"
+      <View style={[styles.registrationDetails, {flexDirection: 'column'}]}>
+        {isLoading ? (
+          <ActivityIndicator />
+        ) : (
+          <FlatList
+            data={data}
+            keyExtractor={({id}, index) => id}
+            renderItem={({item}) => (
+              <View style={styles.item}>
+                <Text style={styles.item}>Spot Name:{item.spotName} </Text>
+                <Text style={styles.item}>Price per hour:{item.price} </Text>
+                <Text style={styles.item}>Taxes:{item.Tax} </Text>
+                <Text style={styles.item}>
+                  Total Proce:{item.calculatedPrice}{' '}
+                </Text>
+                <Text style={styles.item}>Address:{item.address} </Text>
+                <CustomButton
+                  title="Reserve Now"
+                  functionOnClick={() => {
+                    this.props.navigation.navigate('payment');
+                    //this.props.navigation.navigate('tabScreen');
+                  }}
+                />
+              </View>
+            )}
           />
-
-          <CustomButton
-            title="Sign Up"
-            functionOnClick={() => {
-              //this.props.navigation.navigate('search');
-              this.props.navigation.navigate('tabScreen');
-            }}
-          />
-
-          {/* <Button
-            title="Sign up"
-            onPress={() => this.props.navigation.navigate('search')}
-          /> */}
-        </View>
-      </ImageBackground>
+        )}
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover', // or 'stretch'
+    opacity: 80,
+  },
+
   registrationDetails: {
     width: '80%',
     height: '80%',
@@ -83,41 +103,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     padding: 20,
-  },
-  search_header: {
-    height: '30%',
-    justifyContent: 'center',
-    paddingHorizontal: 5,
-  },
-  search_input_box: {
-    height: '100%',
-    backgroundColor: 'rgba(255,255,255,.7)',
-    flexDirection: 'row',
-    padding: 5,
-    alignItems: 'center',
-  },
-  search_icon: {
-    fontSize: 30,
-  },
-
-  search_check_in_check_out_container: {
-    height: '10%',
-    width: '100%',
-    backgroundColor: 'rgba(255,255,255,.7)',
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-  },
-
-  search_check_in_check_out_sub_container: {
-    flex: 1,
-  },
-
-  backgroundImage: {
-    flex: 1,
-    resizeMode: 'cover', // or 'stretch'
-    opacity: 80,
   },
 
   container: {
@@ -132,6 +117,13 @@ const styles = StyleSheet.create({
 
   welcome: {
     fontSize: 50,
+    textAlign: 'center',
+    margin: 10,
+    color: 'rgba(69,145,130,10)',
+  },
+
+  appText: {
+    fontSize: 20,
     textAlign: 'center',
     margin: 10,
     color: 'rgba(69,145,130,10)',
@@ -182,4 +174,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Registration;
+export default PrePaymentPage;

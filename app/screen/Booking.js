@@ -1,83 +1,73 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  Image,
-  ImageBackground,
-  Button,
-  TouchableOpacity,
   ActivityIndicator,
+  FlatList,
+  Text,
+  View,
+  StyleSheet,
+  ImageBackground,
 } from 'react-native';
-
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-import {createAppContainer, createStackNavigator} from 'react-navigation';
-import Icon from 'react-native-vector-icons/Ionicons';
-import DateTimePicker from 'react-native-modal-datetime-picker';
-import moment from 'moment';
 import CustomButton from '../components/Button';
-//import CustomTextInput from '../components/TextInput';
+import {createAppContainer, createStackNavigator} from 'react-navigation';
+import {Button} from 'react-native-paper';
 
-class Booking extends React.Component {
+export default class Booking extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
+      data: [],
       isLoading: true,
-      dataSource: null,
     };
   }
 
   componentDidMount() {
-    return fetch('https://5e991ed75eabe7001681c770.mockapi.io/spotSearch')
+    fetch('https://5e991ed75eabe7001681c770.mockapi.io/spotSearch')
       .then(response => response.json())
-      .then(responseJson => {
+      .then(Responsejson => {
         this.setState({
-          isLoading: false,
-          dataSource: responseJson,
+          data: Responsejson.result,
         });
       })
-      .catch(error => {
-        console.log(error);
+      .catch(error => console.error(error))
+      .finally(() => {
+        this.setState({isLoading: false});
       });
   }
 
   render() {
-    if (this.state.isLoading) {
-      return (
-        <View style={styles.registrationDetails}>
-          <ActivityIndicator size="large" color="red" />
-        </View>
-      );
-    } else {
-      console.log('data', this.state.dataSource);
-      const {result} = this.state.dataSource;
+    const {data, isLoading} = this.state;
 
-      return (
-        <ImageBackground
-          source={require('../assets/parkwayRegistration.jpg')}
-          style={styles.backgroundImage}>
-          <View style={[styles.registrationDetails, {flexDirection: 'column'}]}>
-            {result.map(item => {
-              return (
-                <View style={{flexDirection: 'row'}}>
-                  <Text>{item.address}</Text>
-                  <Text>{item.spotName}</Text>
-                  <Text>{item.price}</Text>
+    return (
+      <ImageBackground
+        source={require('../assets/parkwayRegistration.jpg')}
+        style={styles.backgroundImage}>
+        <View style={[styles.registrationDetails, {flexDirection: 'column'}]}>
+          {isLoading ? (
+            <ActivityIndicator />
+          ) : (
+            <FlatList
+              data={data}
+              keyExtractor={({id}, index) => id}
+              renderItem={({item}) => (
+                <View style={styles.item}>
+                  <Text style={styles.item}>Spot Name:{item.spotName} </Text>
+                  <Text style={styles.item}>Spot Price:{item.price} </Text>
+                  <Text style={styles.item}>Address:{item.address} </Text>
+                  <CustomButton
+                    title="Book Now"
+                    functionOnClick={() => {
+                      this.props.navigation.navigate('prepayment');
+                      //this.props.navigation.navigate('tabScreen');
+                    }}
+                  />
                 </View>
-              );
-            })}
-          </View>
-        </ImageBackground>
-      );
-    }
+              )}
+            />
+          )}
+        </View>
+      </ImageBackground>
+    );
   }
 }
 
@@ -86,6 +76,14 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover', // or 'stretch'
     opacity: 80,
+  },
+  item: {
+    marginTop: 10,
+    padding: 10,
+    flex: 1,
+    backgroundColor: 'rgba(255,255,255,.7)',
+    fontSize: 24,
+    flexDirection: 'column',
   },
 
   registrationDetails: {
@@ -121,5 +119,3 @@ const styles = StyleSheet.create({
     color: 'rgba(69,145,130,10)',
   },
 });
-
-export default Booking;

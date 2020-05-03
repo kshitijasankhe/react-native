@@ -17,6 +17,8 @@ import Login from './screen/Login';
 import Search from './screen/Search';
 import Booking from './screen/Booking';
 import Welcome from './screen/WelcomePage';
+import PrePaymentPage from './screen/PrePaymentPage';
+import Payment from './screen/Payment';
 
 /* const bottomTab2 = createMaterialBottomTabNavigator(
   {
@@ -83,6 +85,8 @@ const stack = createStackNavigator(
     login: {screen: Login},
     search: {screen: Search},
     booking: {screen: Booking},
+    prepayment: {screen: PrePaymentPage},
+    payment: {screen: Payment},
     tabScreen: {screen: TabNavigator},
   },
   {

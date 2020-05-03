@@ -11,6 +11,26 @@ import {
 import Loginform from './Loginform';
 
 class Login extends Component {
+  async componentDidMount() {
+    alert('HI KSHITU PITU');
+    try {
+      //fetch('https://webhook.site/33214564-f9bc-4a3c-b479-ca8ecf6ea2b5', {
+      fetch('some.link.here', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: 'eve.holt@reqres.in',
+          password: 'cityslicka',
+        }),
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
   render() {
     return (
       <ImageBackground

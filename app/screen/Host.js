@@ -25,17 +25,19 @@ class Host extends React.Component {
   }
   render() {
     return (
-      <View style={styles.container}>
-        <ImageBackground
-          source={require('../assets/parkwayRegistration.jpg')}
-          style={styles.image}>
+      <ImageBackground
+        source={require('../assets/parkwayRegistration.jpg')}
+        style={styles.image}>
+        <View style={styles.registrationDetails}>
           <Text>ID Proof</Text>
           <TextInput
+            style={styles.input}
             defaultValue={this.state.username}
             onChangeText={text => this.setState({username: text})}
           />
           <Text style={{backgroundColor: 'transparent'}}>Bank Name</Text>
           <TextInput
+            style={styles.input}
             defaultValue={this.state.username}
             onChangeText={text => this.setState({username: text})}
           />
@@ -43,6 +45,7 @@ class Host extends React.Component {
             Bank Account Number
           </Text>
           <TextInput
+            style={styles.input}
             defaultValue={this.state.password}
             onChangeText={text => this.setState({password: text})}
           />
@@ -64,8 +67,8 @@ class Host extends React.Component {
 
           <Button title={'Submit'} onPress={this.buttonPressed} />
           <View style={styles.half1} />
-        </ImageBackground>
-      </View>
+        </View>
+      </ImageBackground>
     );
   }
 }
@@ -74,6 +77,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  registrationDetails: {
+    width: '80%',
+    height: '80%',
+    backgroundColor: 'rgba(255,255,255,.7)',
+    alignSelf: 'center',
     justifyContent: 'center',
     padding: 20,
   },
@@ -97,6 +108,14 @@ const styles = StyleSheet.create({
   },
   checkbox: {
     alignSelf: 'center',
+  },
+  input: {
+    marginLeft: 20,
+    marginRight: 20,
+    textAlign: 'center',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: 'rgba(69,145,130,10)',
   },
   checkbox1: {
     alignSelf: 'center',
