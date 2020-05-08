@@ -10,7 +10,9 @@ import {
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import Host from './screen/Host';
+import HostDetails from './screen/HostDetails';
+import HostMain from './screen/HostMain';
+import SpotDetails from './screen/SpotDetails';
 import Profile from './screen/Profile';
 import Registration from './screen/Registration';
 import Login from './screen/Login';
@@ -59,7 +61,7 @@ const TabNavigator = createBottomTabNavigator(
     },
 
     host: {
-      screen: Host,
+      screen: HostMain,
       navigationOptions: {
         tabBarLabel: 'Host',
         tabBarIcon: ({tintColor}) => (
@@ -87,6 +89,8 @@ const stack = createStackNavigator(
     booking: {screen: Booking},
     prepayment: {screen: PrePaymentPage},
     payment: {screen: Payment},
+    spotDetails: {screen: SpotDetails},
+    hostDetails: {screen: HostDetails},
     tabScreen: {screen: TabNavigator},
   },
   {

@@ -1,5 +1,4 @@
 import React from 'react';
-import {Component} from 'react';
 import {
   StyleSheet,
   View,
@@ -26,7 +25,7 @@ import moment from 'moment';
 import CustomButton from '../components/Button';
 //import CustomTextInput from '../components/TextInput';
 
-class Registration extends React.Component {
+class SpotDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,64 +36,40 @@ class Registration extends React.Component {
     };
   }
 
-  async componentDidMount() {
-    try {
-      fetch('https://webhook.site/33214564-f9bc-4a3c-b479-ca8ecf6ea2b5', {
-        //fetch('http://10.0.0.153:5000/login', {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          firstname: 'Kshitija',
-          lastname: 'sankhe',
-          email: 'FunKY@haha',
-          mobile: '7789021234',
-          dob: '! june 1991',
-          username: 'wassup@gmail.com',
-          password: 'Abcd@123',
-        }),
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   render() {
-    const count = this.state.count;
     return (
       <ImageBackground
         source={require('../assets/parkwayRegistration.jpg')}
         style={styles.backgroundImage}>
         <View style={styles.registrationDetails}>
-          <Text style={styles.welcome}>ParkWay</Text>
+          <Text style={styles.appText}>
+            Earn some money by hosting your spare parking
+          </Text>
 
-          <TextInput placeholder="Email" style={styles.input} />
+          <TextInput placeholder="SpotName" style={styles.input} />
 
-          <TextInput placeholder="First name" style={styles.input} />
-
-          <TextInput placeholder="Last name" style={styles.input} />
+          <TextInput placeholder="Fee per hour" style={styles.input} />
 
           <TextInput
-            secureTextEntry={true}
+            placeholder="Directions to reach this spot"
             style={styles.input}
-            placeholder="Password"
           />
+
+          <TextInput placeholder="City" style={styles.input} />
+
+          <TextInput placeholder="State" style={styles.input} />
+
+          <TextInput placeholder="Country" style={styles.input} />
+
+          <TextInput placeholder="Pincode" style={styles.input} />
 
           <CustomButton
-            title="Sign Up"
+            title="Next"
             functionOnClick={() => {
-              //this.props.navigation.navigate('search');
-              this.props.navigation.navigate('tabScreen');
+              this.props.navigation.navigate('hostDetails');
+              //this.props.navigation.navigate('tabScreen');
             }}
           />
-
-          {/* <Button
-            title="Sign up"
-            onPress={() => this.props.navigation.navigate('search')}
-          /> */}
         </View>
       </ImageBackground>
     );
@@ -102,6 +77,12 @@ class Registration extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover', // or 'stretch'
+    opacity: 80,
+  },
+
   registrationDetails: {
     width: '80%',
     height: '80%',
@@ -109,41 +90,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     padding: 20,
-  },
-  search_header: {
-    height: '30%',
-    justifyContent: 'center',
-    paddingHorizontal: 5,
-  },
-  search_input_box: {
-    height: '100%',
-    backgroundColor: 'rgba(255,255,255,.7)',
-    flexDirection: 'row',
-    padding: 5,
-    alignItems: 'center',
-  },
-  search_icon: {
-    fontSize: 30,
-  },
-
-  search_check_in_check_out_container: {
-    height: '10%',
-    width: '100%',
-    backgroundColor: 'rgba(255,255,255,.7)',
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-  },
-
-  search_check_in_check_out_sub_container: {
-    flex: 1,
-  },
-
-  backgroundImage: {
-    flex: 1,
-    resizeMode: 'cover', // or 'stretch'
-    opacity: 80,
   },
 
   container: {
@@ -158,6 +104,13 @@ const styles = StyleSheet.create({
 
   welcome: {
     fontSize: 50,
+    textAlign: 'center',
+    margin: 10,
+    color: 'rgba(69,145,130,10)',
+  },
+
+  appText: {
+    fontSize: 20,
     textAlign: 'center',
     margin: 10,
     color: 'rgba(69,145,130,10)',
@@ -208,4 +161,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Registration;
+export default SpotDetails;
