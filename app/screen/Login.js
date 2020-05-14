@@ -51,19 +51,19 @@ class Login extends Component {
       })
         .then(response => {
           const statusCode = response.status;
-          if (statusCode === 200) {
+          /* if (statusCode === 200) {
             Toast.show('Yayy');
           } else {
             Toast.show('Nayy :(');
-          }
-          /* const promiseofdata = response.json();
-          return Promise.all([statusCode, promiseofdata]) */
+          } */
+          const promiseofdata = response.json();
+          return Promise.all([statusCode, promiseofdata]);
           //return response.json();
-        }) /* 
+        })
         .then(res => ({
           statusCode: res[0],
           data: res[1],
-        })) */
+        }))
         .catch(error => {
           console.error(error);
           return {name: 'network error', description: ''};
