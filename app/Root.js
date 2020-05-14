@@ -21,6 +21,8 @@ import Booking from './screen/Booking';
 import Welcome from './screen/WelcomePage';
 import PrePaymentPage from './screen/PrePaymentPage';
 import Payment from './screen/Payment';
+import Activities from './screen/Activities';
+import ActivityDetails from './screen/ActivityDetails';
 
 /* const bottomTab2 = createMaterialBottomTabNavigator(
   {
@@ -92,6 +94,8 @@ const stack = createStackNavigator(
     spotDetails: {screen: SpotDetails},
     hostDetails: {screen: HostDetails},
     tabScreen: {screen: TabNavigator},
+    activities: {screen: Activities},
+    activitydetails: {screen: ActivityDetails},
   },
   {
     initialRouteName: 'welcome',
