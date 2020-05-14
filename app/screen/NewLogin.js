@@ -24,13 +24,15 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import CustomButton from '../components/Button';
+import Toast from 'react-native-simple-toast';
 //import CustomTextInput from '../components/TextInput';
 
-class Registration extends React.Component {
+class NewLogin extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstname: '',
+      username: '',
+      password: '',
       showDisplay: false,
       count: 0,
       color: 'red',
@@ -40,25 +42,63 @@ class Registration extends React.Component {
 
   postData = () => {
     try {
-      fetch('https://webhook.site/33214564-f9bc-4a3c-b479-ca8ecf6ea2b5', {
-        //fetch('http://10.0.0.153:5000/login', {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
+      fetch(
+        'http://parkwayapi-env-2.eba-xgm5ffvk.us-east-2.elasticbeanstalk.com/login',
+        {
+          //fetch('http://10.0.0.153:5000/login', {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: this.state.username,
+            password: this.state.password,
+          }),
         },
-        body: JSON.stringify({
-          firstname: this.state.firstname,
-          lastname: 'Mac1',
-          emailid: 'kpmac@y.com',
-          mobile: '8765412300',
-          dob: '1993-07-09',
-          username: 'pmac',
-          password: 'asd123',
-          usertype: 'H',
-        }),
-      });
+      )
+        .then(response => {
+          const statusCode = response.status;
+          const promiseofdata = response.json();
+          return Promise.all([statusCode, promiseofdata]);
+        })
+        .then(res => {
+          console.log('response', res);
+          const statusCode = res[0];
+          const data = res[1];
+          console.log(data);
+          /* {
+        statusCode: res[0],
+        data: res[1],
+      } */
+          if (statusCode === 500) {
+            Toast.show('Something went wrong we are looking into it!');
+          } else if (statusCode === 200) {
+            Toast.show('Lets find a parking space for you!');
+            this.props.navigation.navigate('tabScreen');
+          } else if (statusCode === 400) {
+            Toast.show('Invalid user credentials');
+          } else {
+            Toast.show('Something went terribly wrong.....we are on it!');
+          }
+        })
+        /* res => {
+          statusCode: res[0];
+          data: res[1];
+
+          if (statusCode === 500) {
+            Toast.show('Something went wrong we are looking into it!');
+          } else if (data === 'success') {
+            this.props.navigation.navigate('tabScreen');
+          } else {
+            Toast.show('Something went wrong we are looking into it!');
+          }
+        } */
+        .catch(error => {
+          console.error(error);
+          return {name: 'network error', description: ''};
+        });
     } catch (e) {
       console.log(e);
     }
@@ -72,27 +112,27 @@ class Registration extends React.Component {
         <View style={styles.registrationDetails}>
           <Text style={styles.welcome}>ParkWay</Text>
 
-          <TextInput placeholder="Email" style={styles.input} />
-
           <TextInput
-            placeholder="First name"
+            placeholder="Email or Username"
             style={styles.input}
-            value={this.state.firstname}
-            onChangeText={text => {
-              this.setState({firstname: text});
+            value={this.state.username}
+            onChangeText={changedText => {
+              this.setState({username: changedText});
             }}
           />
 
-          <TextInput placeholder="Last name" style={styles.input} />
-
           <TextInput
-            secureTextEntry={true}
-            style={styles.input}
             placeholder="Password"
+            style={styles.input}
+            value={this.state.password}
+            secureTextEntry={true}
+            onChangeText={changedText => {
+              this.setState({password: changedText});
+            }}
           />
 
           <CustomButton
-            title="Sign Up"
+            title="Login"
             functionOnClick={() => {
               //this.props.navigation.navigate('search');
               //this.props.navigation.navigate('tabScreen');
@@ -217,4 +257,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Registration;
+export default NewLogin;
