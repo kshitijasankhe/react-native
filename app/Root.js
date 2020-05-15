@@ -23,6 +23,7 @@ import PrePaymentPage from './screen/PrePaymentPage';
 import Payment from './screen/Payment';
 import Activities from './screen/Activities';
 import ActivityDetails from './screen/ActivityDetails';
+import Personaldetails from './screen/Personaldetails';
 
 /* const bottomTab2 = createMaterialBottomTabNavigator(
   {
@@ -96,6 +97,7 @@ const stack = createStackNavigator(
     tabScreen: {screen: TabNavigator},
     activities: {screen: Activities},
     activitydetails: {screen: ActivityDetails},
+    personaldetails: {screen: Personaldetails},
   },
   {
     initialRouteName: 'welcome',

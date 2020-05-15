@@ -15,7 +15,7 @@ import call from 'react-native-phone-call';
 class Profile extends Component {
   render() {
     const args = {
-      number: '+15108722323', // String value with the number to call
+      number: '+14086462243', // String value with the number to call
       prompt: true, // Optional boolean property. Determines if the user should be prompt prior to the call
     };
     return (
@@ -46,7 +46,13 @@ class Profile extends Component {
               />
             </View>
             <View style={styles.infoContent}>
-              <Text style={styles.info}>Personal Details</Text>
+              <Text
+                style={styles.info}
+                onPress={() =>
+                  this.props.navigation.navigate('personaldetails')
+                }>
+                Personal Details
+              </Text>
             </View>
           </View>
 

@@ -57,7 +57,7 @@ class PrePaymentPage extends React.Component {
   render() {
     const {data, isLoading} = this.state;
     const args = {
-      number: '+15108722323', // String value with the number to call
+      number: '+14086462243', // String value with the number to call
       prompt: true, // Optional boolean property. Determines if the user should be prompt prior to the call
     };
 
