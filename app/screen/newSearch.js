@@ -9,7 +9,7 @@ import {
   Button,
   TouchableOpacity,
 } from 'react-native';
-
+import CustomButton from '../components/Button';
 import {
   Header,
   LearnMoreLinks,
@@ -17,7 +17,6 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import CustomButton from '../components/Button';
 
 import {createAppContainer, createStackNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -31,9 +30,7 @@ class Search extends React.Component {
     super(props);
     this.state = {
       isVisibleCheckIn: false,
-      chosenCheckInDateTime: '',
       isVisibleCheckOut: false,
-      chosenCheckOutDateTime: '',
       whichPicker: '',
       P_Zipcode: '',
       P_City: '',
@@ -72,9 +69,10 @@ class Search extends React.Component {
 
   postData = () => {
     if (
-      this.state.P_Zipcode == '' ||
-      this.state.AvailStartDateTime == '' ||
-      this.state.AvailEndDateTime == ''
+      P_Zipcode == '' ||
+      P_City == '' ||
+      AvailStartDateTime == '' ||
+      AvailEndDateTime == ''
     ) {
       alert('Incomeplete Data');
       return;
@@ -132,42 +130,96 @@ class Search extends React.Component {
         source={require('../assets/parkwayRegistration.jpg')}
         style={styles.backgroundImage}>
         <View style={styles.registrationDetails}>
-          <TextInput
-            placeholder="Search by pincode, city or address"
-            style={styles.input}
-            onChangeText={text => {
-              this.setState({P_Zipcode: text});
-            }}
-          />
+          <View style={styles.search_header}>
+            <View style={styles.search_input_box}>
+              <Icon name="ios-search" style={styles.search_icon} />
+              <TextInput
+                placeholder="Search by pincode or city"
+                style={styles.input}
+                onChangeText={text => {
+                  this.setState({P_Zipcode: text});
+                }}
+              />
 
-          <TouchableOpacity
-            onPress={() => this.showPicker('checkin')}
-            style={styles.search_date_time_button}>
-            <Text>{this.state.AvailStartDateTime || 'Check-in'}</Text>
-          </TouchableOpacity>
+              <TextInput
+                placeholder="Search by pincode or city"
+                style={styles.input}
+                onChangeText={text => {
+                  this.setState({P_City: text});
+                }}
+              />
 
-          <TouchableOpacity
-            onPress={() => this.showPicker('checkout')}
-            style={styles.search_date_time_button}>
-            <Text>{this.state.AvailEndDateTime || 'Check-out'}</Text>
-          </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => this.showPicker('checkin')}
+                style={styles.search_date_time_button}>
+                <Text>{this.state.AvailStartDateTime || 'Check-in'}</Text>
+              </TouchableOpacity>
 
-          <DateTimePicker
-            isVisible={this.state.isVisible}
-            onConfirm={this.handlePicker}
-            onCancel={this.hidePicker}
-            mode={'datetime'}
-            is24Hour={true}
-          />
+              <TouchableOpacity
+                onPress={() => this.showPicker('checkout')}
+                style={styles.search_date_time_button}>
+                <Text>{this.state.AvailEndDateTime || 'Check-out'}</Text>
+              </TouchableOpacity>
 
-          <CustomButton
+              <DateTimePicker
+                isVisible={this.state.isVisible}
+                onConfirm={this.handlePicker}
+                onCancel={this.hidePicker}
+                mode={'datetime'}
+                is24Hour={true}
+              />
+
+              <CustomButton
+                title="Search Parking"
+                functionOnClick={() => {
+                  this.postData();
+
+                  //this.props.navigation.navigate('tabScreen');
+                }}
+              />
+            </View>
+          </View>
+
+          {/* checkIn and checkout input boxes */}
+          {/*  <View style={styles.search_check_in_check_out_container}>
+              <View style={styles.search_check_in_check_out_sub_container}>
+                <TextInput placeholder="Check-In" style={styles.input} />
+                <DateTimePicker
+                  isVisible={this.state.isVisible}
+                  onConfirm={this.handlePicker}
+                  onCancel={this.hidePicker}
+                />
+              </View> */}
+
+          {/* <View>
+            
+
+            <TouchableOpacity
+              onPress={() => this.showPicker('checkin')}
+              style={styles.search_date_time_button}>
+              <Text>{this.state.AvailStartDateTime || 'Check-in'}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => this.showPicker('checkout')}
+              style={styles.search_date_time_button}>
+              <Text>{this.state.AvailEndDateTime || 'Check-out'}</Text>
+            </TouchableOpacity>
+
+            <DateTimePicker
+              isVisible={this.state.isVisible}
+              onConfirm={this.handlePicker}
+              onCancel={this.hidePicker}
+              mode={'datetime'}
+              is24Hour={true}
+            />
+          </View>  */}
+
+          {/* <Button
             title="Search Parking"
-            functionOnClick={() => {
-              this.postData();
-
-              //this.props.navigation.navigate('tabScreen');
-            }}
-          />
+            onPress={() => this.props.navigation.navigate('booking')}
+            //onPress={() => this.props.navigation.navigate('tabScreen')}
+          /> */}
         </View>
       </ImageBackground>
     );

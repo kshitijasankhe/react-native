@@ -30,14 +30,15 @@ import CustomButton from '../components/Button';
 class PrePaymentPage extends React.Component {
   constructor(props) {
     super(props);
+    const params = this.props.navigation.state.params;
 
     this.state = {
-      data: [],
+      responsedata: params.data,
       isLoading: true,
     };
   }
 
-  componentDidMount() {
+  /* componentDidMount() {
     fetch(
       'https://5e991ed75eabe7001681c770.mockapi.io/search_spot/spotId/calculatePrice',
     )
@@ -51,39 +52,33 @@ class PrePaymentPage extends React.Component {
       .finally(() => {
         this.setState({isLoading: false});
       });
-  }
+  } */
 
   render() {
-    const {data, isLoading} = this.state;
+    const {responsedata, data, isLoading} = this.state;
+
+    console.log('Actual Response from api: ', responsedata);
+
+    if (!responsedata) {
+      return <Text>Loading</Text>;
+    }
+
+    const results = JSON.parse(responsedata.result);
 
     return (
-      <View style={[styles.registrationDetails, {flexDirection: 'column'}]}>
-        {isLoading ? (
-          <ActivityIndicator />
-        ) : (
-          <FlatList
-            data={data}
-            keyExtractor={({id}, index) => id}
-            renderItem={({item}) => (
-              <View style={styles.item}>
-                <Text style={styles.item}>Spot Name:{item.spotName} </Text>
-                <Text style={styles.item}>Price per hour:{item.price} </Text>
-                <Text style={styles.item}>Taxes:{item.Tax} </Text>
-                <Text style={styles.item}>
-                  Total Proce:{item.calculatedPrice}{' '}
-                </Text>
-                <Text style={styles.item}>Address:{item.address} </Text>
-                <CustomButton
-                  title="Reserve Now"
-                  functionOnClick={() => {
-                    this.props.navigation.navigate('payment');
-                    //this.props.navigation.navigate('tabScreen');
-                  }}
-                />
-              </View>
-            )}
-          />
-        )}
+      <View style={styles.registrationDetails}>
+        <Text style={styles.item}>SpotName:{results[0].spotName} </Text>
+        <Text style={styles.item}>
+          ParkingFeePerHour:{results[0].ParkingFeePerHour}{' '}
+        </Text>
+        <Text style={styles.item}>SPotAddress:{results[0].SPotAddress} </Text>
+        <CustomButton
+          title="Reserve Now"
+          functionOnClick={() => {
+            this.props.navigation.navigate('payment');
+            //this.props.navigation.navigate('tabScreen');
+          }}
+        />
       </View>
     );
   }
