@@ -78,7 +78,15 @@ class Search extends React.Component {
     ) {
       alert('Incomeplete Data');
       return;
+    } else if (isNaN(this.state.P_Zipcode)) {
+      alert('Invalid Zip!!');
     }
+    console.log('request body', {
+      P_Zipcode: parseInt(this.state.P_Zipcode),
+      P_City: this.state.P_City,
+      AvailStartDateTime: this.state.AvailStartDateTime,
+      AvailEndDateTime: this.state.AvailEndDateTime,
+    });
     try {
       fetch(
         'http://parkwayapi-env-2.eba-xgm5ffvk.us-east-2.elasticbeanstalk.com/search',
@@ -99,6 +107,7 @@ class Search extends React.Component {
         },
       )
         .then(response => {
+          console.log('Response here: ', response);
           const statusCode = response.status;
           const promiseofdata = response.json();
           return Promise.all([statusCode, promiseofdata]);
@@ -114,6 +123,7 @@ class Search extends React.Component {
         } */
         })
         .then(res => {
+          console.log('lol data', res);
           const responseCode = res[0];
           const data = res[1];
 

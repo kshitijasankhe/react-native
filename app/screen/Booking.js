@@ -66,6 +66,8 @@ export default class Booking extends Component {
     this.setState({SPotAddress: item.SPotAddress}); */
 
     console.log('Booking SPotAddress', this.state.SPotAddress);
+    console.log('Booking ParkingFeePerHour', this.state.ParkingFeePerHour);
+    console.log('Booking spotName', this.state.spotName);
 
     try {
       fetch(
@@ -103,7 +105,7 @@ export default class Booking extends Component {
         .then(res => {
           const responseCode = res[0];
           const data = res[1];
-          console.log('data on booking after hitting api: ', data);
+          console.log('data on booking page after hitting api: ', data);
 
           if (responseCode == 200) {
             this.props.navigation.navigate('prepayment', {data});
@@ -116,10 +118,8 @@ export default class Booking extends Component {
 
   render() {
     const {responsedata, isLoading} = this.state;
-    //const results = JSON.parse(responsedata.results || null);
     const results = JSON.parse(responsedata.result || null);
 
-    //console.log('Actual Response from api: ', results);
     return (
       <ImageBackground
         source={require('../assets/parkwayRegistration.jpg')}
@@ -155,13 +155,22 @@ export default class Booking extends Component {
                   <CustomButton
                     title="Book Now"
                     functionOnClick={() => {
-                      this.setState({spotName: item.spotName});
-                      this.setState({
+                      this.setState(
+                        {
+                          spotName: item.spotName,
+                          ParkingFeePerHour: item.ParkingFeePerHour,
+                          SPotAddress: item.SPotAddress,
+                        },
+                        () => {
+                          this.postData({item});
+                        },
+                      );
+                      /* this.setState({
                         ParkingFeePerHour: item.ParkingFeePerHour,
                       });
                       this.setState({SPotAddress: item.SPotAddress});
 
-                      this.postData({item});
+                      this.postData({item}); */
                     }}
                   />
                 </View>

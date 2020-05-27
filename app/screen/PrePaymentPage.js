@@ -63,20 +63,19 @@ class PrePaymentPage extends React.Component {
       return <Text>Loading</Text>;
     }
 
-    const results = JSON.parse(responsedata.result);
+    //const results = JSON.parse(responsedata.result);
 
     return (
       <View style={styles.registrationDetails}>
-        <Text style={styles.item}>SpotName:{results[0].spotName} </Text>
+        <Text style={styles.item}>SpotName:{responsedata.spotName} </Text>
         <Text style={styles.item}>
-          ParkingFeePerHour:{results[0].ParkingFeePerHour}{' '}
+          ParkingFeePerHour:{responsedata.ParkingFeePerHour}{' '}
         </Text>
-        <Text style={styles.item}>SPotAddress:{results[0].SPotAddress} </Text>
+        <Text style={styles.item}>SPotAddress:{responsedata.SPotAddress} </Text>
         <CustomButton
           title="Reserve Now"
           functionOnClick={() => {
             this.props.navigation.navigate('payment');
-            //this.props.navigation.navigate('tabScreen');
           }}
         />
       </View>
