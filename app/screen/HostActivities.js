@@ -53,7 +53,7 @@ export default class Activities extends Component {
                 <CustomButton
                   title="View Details"
                   functionOnClick={() => {
-                    this.props.navigation.navigate('activitydetails');
+                    this.props.navigation.navigate('hactivitydetails');
                     //this.props.navigation.navigate('tabScreen');
                   }}
                 />

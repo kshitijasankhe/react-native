@@ -126,6 +126,8 @@ class Search extends React.Component {
           console.log('lol data', res);
           const responseCode = res[0];
           const data = res[1];
+          data.AvailStartDateTime = this.state.AvailStartDateTime;
+          data.AvailEndDateTime = this.state.AvailEndDateTime;
 
           if (responseCode == 200) {
             this.props.navigation.navigate('booking', {data});
@@ -246,8 +248,8 @@ const styles = StyleSheet.create({
     color: 'rgba(69,145,130,10)',
   },
   input: {
-    marginLeft: 20,
-    marginRight: 20,
+    marginLeft: 10,
+    marginRight: 10,
     textAlign: 'center',
     borderRadius: 5,
     borderWidth: 1,
@@ -255,13 +257,13 @@ const styles = StyleSheet.create({
   },
   search_date_time_button: {
     width: '50%',
-    height: '30%',
+    height: '20%',
     textAlign: 'center',
     borderRadius: 30,
     borderWidth: 1,
     borderColor: 'rgba(69,145,130,10)',
     justifyContent: 'center',
-    paddingHorizontal: 5,
+    paddingHorizontal: 10,
   },
   sectionContainer: {
     marginTop: 32,

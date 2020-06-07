@@ -35,6 +35,11 @@ class PrePaymentPage extends React.Component {
     this.state = {
       responsedata: params.data,
       isLoading: true,
+      gid: '',
+      sdid: '',
+      rsdatetime: '',
+      redatetime: '',
+      tfee: '',
     };
   }
 
@@ -53,11 +58,61 @@ class PrePaymentPage extends React.Component {
         this.setState({isLoading: false});
       });
   } */
+  postData = () => {
+    //GID will be handled using redux
+    //console.log('prepayment gid', this.state.gid);
+    console.log('prepayment sdid', this.state.sdid);
+    console.log('prepayment rsdatetime', this.state.rsdatetime);
+    console.log('prepayment redatetime', this.state.redatetime);
+    console.log('prepayment tfee', this.state.tfee);
+
+    try {
+      fetch(
+        'http://parkwayapi-env-2.eba-xgm5ffvk.us-east-2.elasticbeanstalk.com/reservation',
+        {
+          //fetch('http://10.0.0.153:5000/login', {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            gid: 13,
+            sdid: this.state.sdid,
+            rsdatetime: this.state.rsdatetime,
+            redatetime: this.state.redatetime,
+            tfee: this.state.tfee,
+          }),
+        },
+      ).then(response => {
+        const statusCode = response.status;
+        const promiseofdata = response.json();
+        // return Promise.all([statusCode, promiseofdata]);
+        /* if (statusCode === 500) {
+          Toast.show('Something went wrong we are looking into it!');
+        } else if (statusCode === 200) {
+          Toast.show('Registered Successfully');
+          this.props.navigation.navigate('tabScreen');
+        } else if (statusCode === 400) {
+          Toast.show('Invalid user credentials');
+        } else {
+          Toast.show('Something went terribly wrong.....we are on it!');
+        } */
+
+        if (responseCode == 200) {
+          this.props.navigation.navigate('payment');
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   render() {
     const {responsedata, data, isLoading} = this.state;
 
-    console.log('Actual Response from api: ', responsedata);
+    console.log('********Prepayment*********** ', responsedata);
 
     if (!responsedata) {
       return <Text>Loading</Text>;
@@ -67,15 +122,43 @@ class PrePaymentPage extends React.Component {
 
     return (
       <View style={styles.registrationDetails}>
-        <Text style={styles.item}>SpotName:{responsedata.spotName} </Text>
+        <Text style={styles.item}>Spot Name:{responsedata.spotName} </Text>
         <Text style={styles.item}>
-          ParkingFeePerHour:{responsedata.ParkingFeePerHour}{' '}
+          Parking Fee Per Hour:{responsedata.ParkingFeePerHour}{' '}
         </Text>
-        <Text style={styles.item}>SPotAddress:{responsedata.SPotAddress} </Text>
-        <CustomButton
+        <Text style={styles.item}>
+          Spot Address:{responsedata.SPotAddress}{' '}
+        </Text>
+
+        <Text style={styles.item}>
+          Total Fee including taxes:{responsedata.tfee}{' '}
+        </Text>
+        {/*   <CustomButton
           title="Reserve Now"
           functionOnClick={() => {
             this.props.navigation.navigate('payment');
+          }}
+        /> */}
+
+        <CustomButton
+          title="Reserve Now"
+          functionOnClick={() => {
+            this.setState(
+              {
+                sdid: responsedata.sdid,
+                rsdatetime: responsedata.rsdatetime,
+                redatetime: responsedata.redatetime,
+                tfee: responsedata.tfee,
+              },
+              () => {
+                this.postData();
+              },
+            );
+            /* this.setState({
+                        ParkingFeePerHour: item.ParkingFeePerHour,
+                      });
+                      this.setState({SPotAddress: item.SPotAddress});
+                      this.postData({item}); */
           }}
         />
       </View>
@@ -90,8 +173,8 @@ const styles = StyleSheet.create({
     opacity: 80,
   },
   item: {
-    marginTop: 10,
-    padding: 10,
+    marginTop: 5,
+    padding: 5,
     flex: 1,
     backgroundColor: 'rgba(255,255,255,.7)',
     fontSize: 24,
@@ -99,8 +182,8 @@ const styles = StyleSheet.create({
   },
 
   registrationDetails: {
-    width: '80%',
-    height: '80%',
+    width: '100%',
+    height: '100%',
     backgroundColor: 'rgba(255,255,255,.7)',
     alignSelf: 'center',
     justifyContent: 'center',

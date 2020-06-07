@@ -55,7 +55,7 @@ class SpotDetails extends React.Component {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            hid: 50,
+            hid: this.state.hid,
             pcity: this.state.pcity,
             sAddress: this.state.sAddress,
             pstate: this.state.pstate,
@@ -88,63 +88,69 @@ class SpotDetails extends React.Component {
         source={require('../assets/parkwayRegistration.jpg')}
         style={styles.backgroundImage}>
         <View style={styles.registrationDetails}>
-          <Text style={styles.appText}>
-            Earn some money by hosting your spare parking
-          </Text>
+          <Text style={styles.appText}>Some details for the parking spots</Text>
 
           <TextInput
-            placeholder="Address"
+            placeholder="SpotName"
             style={styles.input}
-            value={this.state.sAddress}
+            value={this.state.hid}
             onChangeText={text => {
-              this.setState({sAddress: text});
+              this.setState({hid: text});
             }}
           />
 
-          <TextInput
-            placeholder="City"
-            style={styles.input}
-            value={this.state.pcity}
-            onChangeText={text => {
-              this.setState({pcity: text});
-            }}
-          />
+          <TextInput placeholder="Fee per hour" style={styles.input} />
 
-          <TextInput
-            placeholder="State"
-            style={styles.input}
-            value={this.state.pstate}
-            onChangeText={text => {
-              this.setState({pstate: text});
-            }}
-          />
+          <Text style={styles.appText}>Enter Avaliability of the spot</Text>
 
-          <TextInput
-            placeholder="Country"
-            style={styles.input}
-            value={this.state.pcountry}
-            onChangeText={text => {
-              this.setState({pcountry: text});
-            }}
-          />
+          <View>
+            {/* to show selected date and time in the field */}
 
-          <TextInput
-            placeholder="Pincode"
-            style={styles.input}
-            value={this.state.pzcode}
-            onChangeText={text => {
-              this.setState({pzcode: text});
-            }}
-          />
+            <TouchableOpacity
+              onPress={() => this.showPicker('checkin')}
+              style={styles.search_date_time_button}>
+              <Text>
+                {this.state.chosenCheckInDateTime || 'Avaliable Start'}
+              </Text>
+            </TouchableOpacity>
 
-          <CustomButton
-            title="Register Parking spot"
-            functionOnClick={() => {
-              this.postData();
-              this.props.navigation.navigate('subspotdetails');
-              //this.props.navigation.navigate('tabScreen');
-            }}
-          />
+            <TouchableOpacity
+              onPress={() => this.showPicker('checkout')}
+              style={styles.search_date_time_button}>
+              <Text>
+                {this.state.chosenCheckOutDateTime || 'Avaliable End'}
+              </Text>
+            </TouchableOpacity>
+
+            <DateTimePicker
+              isVisible={this.state.isVisible}
+              onConfirm={this.handlePicker}
+              onCancel={this.hidePicker}
+              mode={'datetime'}
+              is24Hour={true}
+            />
+          </View>
+        </View>
+
+        <View style={styles.container}>
+          <View>
+            <CustomButton
+              title="Register Parking spot"
+              functionOnClick={() => {
+                this.props.navigation.navigate('spotDetails');
+                //this.props.navigation.navigate('tabScreen');
+              }}
+            />
+          </View>
+          <View>
+            <CustomButton
+              title="Add another spot"
+              functionOnClick={() => {
+                this.props.navigation.navigate('subspotdetails');
+                //this.props.navigation.navigate('tabScreen');
+              }}
+            />
+          </View>
         </View>
       </ImageBackground>
     );
@@ -169,8 +175,8 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    justifyContent: 'center',
-    padding: 20,
+    flexDirection: 'row',
+    width: '50%',
   },
   engine: {
     position: 'absolute',

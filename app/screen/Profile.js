@@ -29,10 +29,6 @@ class Profile extends Component {
                 style={styles.avatar}
                 source={require('../assets/user.png')}
               />
-
-              <Text style={styles.name}>Ajay Deshmukh </Text>
-              <Text style={styles.userInfo}>adeshmukh@scu.edu </Text>
-              <Text style={styles.userInfo}>California </Text>
             </View>
           </ImageBackground>
         </View>
@@ -56,7 +52,7 @@ class Profile extends Component {
             </View>
           </View>
 
-          <View style={styles.item}>
+          {/* <View style={styles.item}>
             <View style={styles.iconContent}>
               <Image
                 style={styles.icon}
@@ -65,6 +61,22 @@ class Profile extends Component {
             </View>
             <View style={styles.infoContent}>
               <Text style={styles.info}>Wallet</Text>
+            </View>
+          </View> */}
+
+          <View style={styles.item}>
+            <View style={styles.iconContent}>
+              <Image
+                style={styles.icon}
+                source={require('../assets/fav.png')}
+              />
+            </View>
+            <View style={styles.infoContent}>
+              <Text
+                style={styles.info}
+                onPress={() => this.props.navigation.navigate('activities')}>
+                Guest Activities
+              </Text>
             </View>
           </View>
 
@@ -78,8 +90,10 @@ class Profile extends Component {
             <View style={styles.infoContent}>
               <Text
                 style={styles.info}
-                onPress={() => this.props.navigation.navigate('activities')}>
-                Activities
+                onPress={() =>
+                  this.props.navigation.navigate('hostactivities')
+                }>
+                Host Activities
               </Text>
             </View>
           </View>
@@ -92,7 +106,13 @@ class Profile extends Component {
               />
             </View>
             <View style={styles.infoContent}>
-              <Text style={styles.info}>How ParkWay Works</Text>
+              <Text
+                style={styles.info}
+                onPress={() =>
+                  this.props.navigation.navigate('howparkwayworks')
+                }>
+                How ParkWay Works
+              </Text>
             </View>
           </View>
 

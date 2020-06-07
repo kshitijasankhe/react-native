@@ -24,6 +24,10 @@ export default class Booking extends Component {
       spotName: '',
       ParkingFeePerHour: '',
       SPotAddress: '',
+      tfee: '',
+      sdid: '',
+      rsdatetime: '',
+      redatetime: '',
     };
   }
 
@@ -68,6 +72,9 @@ export default class Booking extends Component {
     console.log('Booking SPotAddress', this.state.SPotAddress);
     console.log('Booking ParkingFeePerHour', this.state.ParkingFeePerHour);
     console.log('Booking spotName', this.state.spotName);
+    console.log('Booking sdid', this.state.sdid);
+    console.log('Booking rsdatetime', this.state.rsdatetime);
+    console.log('Booking redatetime', this.state.redatetime);
 
     try {
       fetch(
@@ -84,6 +91,10 @@ export default class Booking extends Component {
             spotName: this.state.spotName,
             ParkingFeePerHour: this.state.ParkingFeePerHour,
             SPotAddress: this.state.SPotAddress,
+            tfee: this.state.tfee,
+            sdid: this.state.sdid,
+            rsdatetime: this.state.responsedata.AvailStartDateTime,
+            redatetime: this.state.responsedata.AvailEndDateTime,
           }),
         },
       )
@@ -118,67 +129,67 @@ export default class Booking extends Component {
 
   render() {
     const {responsedata, isLoading} = this.state;
+    console.log('Data from search: ', responsedata);
     const results = JSON.parse(responsedata.result || null);
 
     return (
-      <ImageBackground
-        source={require('../assets/parkwayRegistration.jpg')}
-        style={styles.backgroundImage}>
-        <View style={[styles.registrationDetails, {flexDirection: 'column'}]}>
-          {isLoading ? (
-            <ActivityIndicator />
-          ) : (
-            <FlatList
-              data={results}
-              keyExtractor={({id}, index) => id}
-              renderItem={({item}) => (
-                <View style={styles.item}>
-                  <Text style={styles.item}>Spot Name:{item.spotName} </Text>
+      <View style={[styles.registrationDetails, {flexDirection: 'column'}]}>
+        {isLoading ? (
+          <ActivityIndicator />
+        ) : (
+          <FlatList
+            data={results}
+            keyExtractor={({id}, index) => id}
+            renderItem={({item}) => (
+              <View style={styles.item}>
+                <Text style={styles.item}>Spot Name:{item.spotName} </Text>
 
-                  <Text style={styles.item}>
-                    Spot Price: ${item.ParkingFeePerHour}{' '}
-                  </Text>
-                  <Text style={styles.item}>Address:{item.SPotAddress} </Text>
+                <Text style={styles.item}>
+                  Spot Price: ${item.ParkingFeePerHour}{' '}
+                </Text>
+                <Text style={styles.item}>Address:{item.SPotAddress} </Text>
+                <Text style={styles.item}>
+                  Total fee including taxes:{item.total_fee}{' '}
+                </Text>
 
-                  {/* <Button
+                {/* <Button
                     onPress={() => {
                       this.setState({spotName: item.spotName});
                       this.setState({
                         ParkingFeePerHour: item.ParkingFeePerHour,
                       });
                       this.setState({SPotAddress: item.SPotAddress});
-
                       this.postData();
                     }}
                     title="Book Now"
                   /> */}
-                  <CustomButton
-                    title="Book Now"
-                    functionOnClick={() => {
-                      this.setState(
-                        {
-                          spotName: item.spotName,
-                          ParkingFeePerHour: item.ParkingFeePerHour,
-                          SPotAddress: item.SPotAddress,
-                        },
-                        () => {
-                          this.postData({item});
-                        },
-                      );
-                      /* this.setState({
+                <CustomButton
+                  title="Book Now"
+                  functionOnClick={() => {
+                    this.setState(
+                      {
+                        spotName: item.spotName,
+                        ParkingFeePerHour: item.ParkingFeePerHour,
+                        SPotAddress: item.SPotAddress,
+                        tfee: item.total_fee,
+                        sdid: item.SdID,
+                      },
+                      () => {
+                        this.postData({item});
+                      },
+                    );
+                    /* this.setState({
                         ParkingFeePerHour: item.ParkingFeePerHour,
                       });
                       this.setState({SPotAddress: item.SPotAddress});
-
                       this.postData({item}); */
-                    }}
-                  />
-                </View>
-              )}
-            />
-          )}
-        </View>
-      </ImageBackground>
+                  }}
+                />
+              </View>
+            )}
+          />
+        )}
+      </View>
     );
   }
 }
@@ -199,9 +210,10 @@ const styles = StyleSheet.create({
   },
 
   registrationDetails: {
-    width: '80%',
-    height: '80%',
+    width: '100%',
+    height: '100%',
     backgroundColor: 'rgba(255,255,255,.7)',
+    //backgroundColor: 'rgba(255,255,255,.7)',
     alignSelf: 'center',
     justifyContent: 'center',
     padding: 20,

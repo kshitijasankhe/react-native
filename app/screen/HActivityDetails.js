@@ -71,7 +71,7 @@ class PrePaymentPage extends React.Component {
             keyExtractor={({id}, index) => id}
             renderItem={({item}) => (
               <View style={styles.item}>
-                <Text style={styles.appText}>Rented Spot Details </Text>
+                <Text style={styles.appText}>Hosted Spot Details</Text>
                 <Text style={styles.item}>Start Date: </Text>
                 <Text style={styles.item}>Start Time: </Text>
                 <Text style={styles.item}>End Date: </Text>

@@ -77,11 +77,15 @@ class Personaldetails extends React.Component {
     //const results = JSON.parse([responsedata]);
 
     return (
-      <View style={styles.registrationDetails}>
-        <Text style={styles.item}>Name:{results[0].Name} </Text>
-        <Text style={styles.item}>EmailID:{results[0].EmailID} </Text>
-        <Text style={styles.item}>Username:{results[0].Username} </Text>
-      </View>
+      <ImageBackground
+        source={require('../assets/plainBackground.jpg')}
+        style={styles.backgroundImage}>
+        <View style={styles.registrationDetails}>
+          <Text style={styles.welcome}>Name:{results[0].Name} </Text>
+          <Text style={styles.welcome}>EmailID:{results[0].EmailID} </Text>
+          <Text style={styles.welcome}>Username:{results[0].Username} </Text>
+        </View>
+      </ImageBackground>
     );
   }
 }
@@ -99,9 +103,18 @@ const styles = StyleSheet.create({
     fontSize: 24,
     flexDirection: 'column',
   },
+  welcome: {
+    fontSize: 24,
+    marginTop: 10,
+    padding: 10,
+    flexDirection: 'column',
+    textAlign: 'center',
+    margin: 10,
+    color: 'rgba(69,145,130,10)',
+  },
   registrationDetails: {
-    width: '100%',
-    height: '80%',
+    width: '90%',
+    height: '100%',
     backgroundColor: 'rgba(255,255,255,.7)',
     alignSelf: 'center',
     justifyContent: 'center',
