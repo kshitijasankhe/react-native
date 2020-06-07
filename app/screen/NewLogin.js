@@ -18,7 +18,7 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
+import {connect} from 'react-redux';
 import {createAppContainer, createStackNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -76,6 +76,7 @@ class NewLogin extends React.Component {
             Toast.show('Something went wrong we are looking into it!');
           } else if (statusCode === 200) {
             Toast.show('Lets find a parking space for you!');
+            this.props.setLoginId(data.message);
             this.props.navigation.navigate('tabScreen');
           } else if (statusCode === 400) {
             Toast.show('Invalid user credentials');
@@ -257,4 +258,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NewLogin;
+const mapDispatchToProps = dispatch => {
+  return {
+    setLoginId: loginId => {
+      dispatch({type: 'SET_LOGIN_ID', payload: {loginId}});
+    },
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(NewLogin);

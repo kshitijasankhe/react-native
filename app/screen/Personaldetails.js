@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text, View, StyleSheet, ImageBackground, Button} from 'react-native';
+import {connect} from 'react-redux';
 
 class Personaldetails extends React.Component {
   constructor(props) {
@@ -19,8 +20,10 @@ class Personaldetails extends React.Component {
   // }
 
   componentDidMount() {
+    const loginId = this.props.account.loginId;
+    console.log('LoginId:', loginId);
     fetch(
-      'http://parkwayapi-env-2.eba-xgm5ffvk.us-east-2.elasticbeanstalk.com/profile_details/11',
+      `http://parkwayapi-env-2.eba-xgm5ffvk.us-east-2.elasticbeanstalk.com/profile_details/${loginId}`,
     )
       .then(response => response.json())
       .then(Responsejson => {
@@ -121,5 +124,10 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 });
-
-export default Personaldetails;
+const mapStateToProps = state => ({
+  account: state.account,
+});
+export default connect(
+  mapStateToProps,
+  null,
+)(Personaldetails);
