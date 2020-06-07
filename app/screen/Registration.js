@@ -18,7 +18,7 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
+import {connect} from 'react-redux';
 import {createAppContainer, createStackNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -69,20 +69,30 @@ class Registration extends React.Component {
             usertype: this.state.usertype,
           }),
         },
-      ).then(response => {
-        const statusCode = response.status;
+      )
+        .then(response => {
+          const statusCode = response.status;
+          const promiseofdata = response.json();
+          return Promise.all([statusCode, promiseofdata]);
+        })
+        .then(res => {
+          console.log('response', res);
+          const statusCode = res[0];
+          const data = res[1];
+          console.log(data);
 
-        if (statusCode === 500) {
-          Toast.show('Something went wrong we are looking into it!');
-        } else if (statusCode === 200) {
-          Toast.show('Registered Successfully');
-          this.props.navigation.navigate('tabScreen');
-        } else if (statusCode === 400) {
-          Toast.show('Invalid user credentials');
-        } else {
-          Toast.show('Something went terribly wrong.....we are on it!');
-        }
-      });
+          if (statusCode === 500) {
+            Toast.show('Something went wrong we are looking into it!');
+          } else if (statusCode === 200) {
+            Toast.show('Registered Successfully');
+            this.props.setLoginId(data.message);
+            this.props.navigation.navigate('tabScreen');
+          } else if (statusCode === 400) {
+            Toast.show('Invalid user credentials');
+          } else {
+            Toast.show('Something went terribly wrong.....we are on it!');
+          }
+        });
     } catch (e) {
       console.log(e);
     }
@@ -285,5 +295,14 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
 });
-
-export default Registration;
+const mapDispatchToProps = dispatch => {
+  return {
+    setLoginId: loginId => {
+      dispatch({type: 'SET_LOGIN_ID', payload: {loginId}});
+    },
+  };
+};
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Registration);
