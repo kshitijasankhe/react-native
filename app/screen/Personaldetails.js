@@ -21,7 +21,8 @@ class Personaldetails extends React.Component {
 
   componentDidMount() {
     const loginId = this.props.account.loginId;
-    console.log('LoginId:', loginId);
+
+    console.log('LoginId:', loginId, this.props);
     fetch(
       `http://parkwayapi-env-2.eba-xgm5ffvk.us-east-2.elasticbeanstalk.com/profile_details/${loginId}`,
     )
@@ -87,6 +88,9 @@ class Personaldetails extends React.Component {
           <Text style={styles.welcome}>Name:{results[0].Name} </Text>
           <Text style={styles.welcome}>EmailID:{results[0].EmailID} </Text>
           <Text style={styles.welcome}>Username:{results[0].Username} </Text>
+          <Text style={styles.welcome}>
+            Contact:{results[0].Contact_Number}{' '}
+          </Text>
         </View>
       </ImageBackground>
     );

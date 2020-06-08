@@ -19,7 +19,7 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
+import {connect} from 'react-redux';
 import {createAppContainer, createStackNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -43,30 +43,16 @@ class PrePaymentPage extends React.Component {
     };
   }
 
-  /* componentDidMount() {
-    fetch(
-      'https://5e991ed75eabe7001681c770.mockapi.io/search_spot/spotId/calculatePrice',
-    )
-      .then(response => response.json())
-      .then(Responsejson => {
-        this.setState({
-          data: Responsejson.result,
-        });
-      })
-      .catch(error => console.error(error))
-      .finally(() => {
-        this.setState({isLoading: false});
-      });
-  } */
   postData = () => {
     //GID will be handled using redux
-    //console.log('prepayment gid', this.state.gid);
+    console.log('prepayment gid', this.props.account.loginId);
     console.log('prepayment sdid', this.state.sdid);
     console.log('prepayment rsdatetime', this.state.rsdatetime);
     console.log('prepayment redatetime', this.state.redatetime);
     console.log('prepayment tfee', this.state.tfee);
 
     try {
+      console.log('Calling api');
       fetch(
         'http://parkwayapi-env-2.eba-xgm5ffvk.us-east-2.elasticbeanstalk.com/reservation',
         {
@@ -78,7 +64,7 @@ class PrePaymentPage extends React.Component {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            gid: 13,
+            gid: this.props.account.loginId,
             sdid: this.state.sdid,
             rsdatetime: this.state.rsdatetime,
             redatetime: this.state.redatetime,
@@ -87,7 +73,7 @@ class PrePaymentPage extends React.Component {
         },
       ).then(response => {
         const statusCode = response.status;
-        const promiseofdata = response.json();
+        //const promiseofdata = response.json();
         // return Promise.all([statusCode, promiseofdata]);
         /* if (statusCode === 500) {
           Toast.show('Something went wrong we are looking into it!');
@@ -100,7 +86,7 @@ class PrePaymentPage extends React.Component {
           Toast.show('Something went terribly wrong.....we are on it!');
         } */
 
-        if (responseCode == 200) {
+        if (statusCode == 200) {
           this.props.navigation.navigate('payment');
         }
       });
@@ -260,4 +246,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PrePaymentPage;
+const mapStateToProps = state => ({
+  account: state.account,
+});
+export default connect(
+  mapStateToProps,
+  null,
+)(PrePaymentPage);

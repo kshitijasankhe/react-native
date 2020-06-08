@@ -42,7 +42,12 @@ class HowParkWayWorks extends React.Component {
         source={require('../assets/parkwayRegistration.jpg')}
         style={styles.backgroundImage}>
         <View style={styles.registrationDetails}>
-          <Text style={styles.appText}>THIS IS Login PAGE</Text>
+          <Text style={styles.appText}>
+            Parkway helps millions of people easily find and to quickly pay for
+            street and garage parking without having to use a meter or kiosk.
+            Parkway also offers you to rent out your own parking spot and to
+            earn some money on the side
+          </Text>
         </View>
       </ImageBackground>
     );
