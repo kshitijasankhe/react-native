@@ -18,6 +18,8 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import {connect} from 'react-redux';
+
 import {createAppContainer, createStackNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -44,6 +46,8 @@ class SpotDetails extends React.Component {
 
   postData = () => {
     try {
+      const loginId = this.props.account.loginId;
+      console.log('prepayment gid', this.props.account.loginId);
       fetch(
         'http://parkwayapi-env-2.eba-xgm5ffvk.us-east-2.elasticbeanstalk.com/host_spot',
         {
@@ -55,7 +59,7 @@ class SpotDetails extends React.Component {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            hid: 50,
+            hid: this.props.account.loginId,
             pcity: this.state.pcity,
             sAddress: this.state.sAddress,
             pstate: this.state.pstate,
@@ -235,5 +239,10 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
 });
-
-export default SpotDetails;
+const mapStateToProps = state => ({
+  account: state.account,
+});
+export default connect(
+  mapStateToProps,
+  null,
+)(SpotDetails);

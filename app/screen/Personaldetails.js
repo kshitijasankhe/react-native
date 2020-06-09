@@ -85,11 +85,12 @@ class Personaldetails extends React.Component {
         source={require('../assets/plainBackground.jpg')}
         style={styles.backgroundImage}>
         <View style={styles.registrationDetails}>
+          <Text style={styles.welcome2}> Your personal details</Text>
           <Text style={styles.welcome}>Name:{results[0].Name} </Text>
-          <Text style={styles.welcome}>EmailID:{results[0].EmailID} </Text>
+          <Text style={styles.welcome}>Email ID:{results[0].EmailID} </Text>
           <Text style={styles.welcome}>Username:{results[0].Username} </Text>
           <Text style={styles.welcome}>
-            Contact:{results[0].Contact_Number}{' '}
+            Contact Number {results[0].Contact_Number}{' '}
           </Text>
         </View>
       </ImageBackground>
@@ -109,6 +110,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,.7)',
     fontSize: 24,
     flexDirection: 'column',
+  },
+  welcome2: {
+    fontSize: 30,
+    marginTop: 10,
+    padding: 10,
+    flexDirection: 'column',
+    textAlign: 'center',
+    margin: 10,
+    color: 'rgba(69,145,130,10)',
   },
   welcome: {
     fontSize: 24,

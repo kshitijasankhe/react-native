@@ -43,13 +43,24 @@ class HostMain extends React.Component {
         style={styles.backgroundImage}>
         <View style={styles.registrationDetails}>
           <Text style={styles.appText}>Start Hosting your spot</Text>
-          <CustomButton
-            title="Start hosting"
-            functionOnClick={() => {
-              this.props.navigation.navigate('spotDetails');
-              //this.props.navigation.navigate('tabScreen');
-            }}
-          />
+          <View style={styles.container}>
+            <CustomButton
+              title="Host a Parking Spot"
+              functionOnClick={() => {
+                this.props.navigation.navigate('spotDetails');
+                //this.props.navigation.navigate('tabScreen');
+              }}
+            />
+          </View>
+          <View style={styles.container}>
+            <CustomButton
+              title="My Hosted Spaces"
+              functionOnClick={() => {
+                this.props.navigation.navigate('hosthome');
+                //this.props.navigation.navigate('tabScreen');
+              }}
+            />
+          </View>
         </View>
       </ImageBackground>
     );

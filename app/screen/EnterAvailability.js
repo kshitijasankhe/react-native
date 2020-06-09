@@ -28,7 +28,7 @@ import CustomButton from '../components/Button';
 //import CustomTextInput from '../components/TextInput';
 import call from 'react-native-phone-call';
 
-class ActivityDetails extends React.Component {
+class EnterAvailability extends React.Component {
   constructor(props) {
     super(props);
     const params = this.props.navigation.state.params;
@@ -38,6 +38,34 @@ class ActivityDetails extends React.Component {
       isLoading: true,
     };
   }
+
+  handlePicker = datetime => {
+    const whichPicker = this.state.whichPicker;
+    if (whichPicker == 'checkin') {
+      this.setState({
+        isVisible: false,
+        AvailableStartDateTime: moment(datetime).format('MMMM, Do YYYY HH:mm '),
+      });
+    } else {
+      this.setState({
+        isVisible: false,
+        AvailableEndDateTime: moment(datetime).format('MMMM, Do YYYY HH:mm '),
+      });
+    }
+  };
+
+  hidePicker = () => {
+    this.setState({
+      isVisible: false,
+    });
+  };
+
+  showPicker = param => {
+    this.setState({
+      isVisible: true,
+      whichPicker: param,
+    });
+  };
 
   /*componentDidMount() {
     fetch(
@@ -55,37 +83,95 @@ class ActivityDetails extends React.Component {
       });
   }*/
 
+  postData = () => {
+    try {
+      fetch(
+        'http://parkwayapi-env-2.eba-xgm5ffvk.us-east-2.elasticbeanstalk.com/spot_availability',
+        {
+          //fetch('http://10.0.0.153:5000/login', {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            Sdid: this.state.SdID,
+            AvailableStartDateTime: this.state.AvailableStartDateTime,
+            AvailableEndDateTime: this.state.AvailableEndDateTime,
+          }),
+        },
+      ).then(response => {
+        const statusCode = response.status;
+
+        if (statusCode === 500) {
+          Toast.show('Something went wrong we are looking into it!');
+        } else if (statusCode === 200) {
+          Toast.show('Availabilty entered Successfully');
+          this.props.navigation.navigate('tabScreen');
+        } else if (statusCode === 400) {
+          Toast.show('Invalid user credentials');
+        } else {
+          Toast.show('Something went terribly wrong.....we are on it!');
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   render() {
     const {responsedata, data, isLoading} = this.state;
+
     const args = {
       number: '+14086462243', // String value with the number to call
       prompt: true, // Optional boolean property. Determines if the user should be prompt prior to the call
     };
 
-    if (!responsedata) {
-      return <Text>Loading</Text>;
-    }
-
     return (
       <View style={[styles.registrationDetails, {flexDirection: 'column'}]}>
         <View style={styles.item}>
-          <Text style={styles.appText}>Rented Spot Details </Text>
-          <Text style={styles.item}>Spot Name: {responsedata.SpotName} </Text>
-          <Text style={styles.item}>
-            Start Date and Time: {responsedata.reserved_from}{' '}
-          </Text>
-          <Text style={styles.item}>
-            End Date and Time: {responsedata.reserved_to}
-          </Text>
-          <Text style={styles.item}>
-            Total Price: ${responsedata.totalfee}{' '}
-          </Text>
-          <Text style={styles.item}>Address:{responsedata.SpotAddress} </Text>
-          <Text style={styles.item}>City:{responsedata.P_City} </Text>
+          <Text style={styles.appText}>Please Enter Availabilty</Text>
+          <Text style={styles.item}>Spot Name: {responsedata.SpotName}</Text>
+
+          <View style={styles.container}>
+            {/* to show selected date and time in the field */}
+
+            <TouchableOpacity
+              onPress={() => this.showPicker('checkin')}
+              style={styles.search_date_time_button}>
+              <Text>
+                {this.state.AvailableStartDateTime || 'Avaliable Start'}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => this.showPicker('checkout')}
+              style={styles.search_date_time_button}>
+              <Text>{this.state.AvailableEndDateTime || 'Avaliable End'}</Text>
+            </TouchableOpacity>
+
+            <DateTimePicker
+              isVisible={this.state.isVisible}
+              onConfirm={this.handlePicker}
+              onCancel={this.hidePicker}
+              mode={'datetime'}
+              is24Hour={true}
+            />
+          </View>
+
           <CustomButton
-            title="Contact Support"
+            title="Enter Availabilty"
             functionOnClick={() => {
-              call(args).catch(console.error);
+              this.setState(
+                {
+                  SdID: responsedata.SdID,
+                },
+                () => {
+                  this.postData();
+                },
+              );
+              //call(args).catch(console.error);
               //this.props.navigation.navigate('tabScreen');
             }}
           />
@@ -110,7 +196,8 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    justifyContent: 'center',
+    flexDirection: 'row',
+    width: '80%',
     padding: 20,
   },
   engine: {
@@ -140,8 +227,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(69,145,130,10)',
   },
   search_date_time_button: {
-    width: '50%',
-    height: '30%',
+    width: '60%',
+    height: '50%',
     textAlign: 'center',
     borderRadius: 30,
     borderWidth: 1,
@@ -184,6 +271,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#FFF',
   },
+
+  item: {
+    fontSize: 20,
+    padding: 10,
+  },
 });
 
-export default ActivityDetails;
+export default EnterAvailability;

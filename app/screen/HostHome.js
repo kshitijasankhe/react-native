@@ -12,7 +12,7 @@ import {createAppContainer, createStackNavigator} from 'react-navigation';
 import {Button} from 'react-native-paper';
 import {connect} from 'react-redux';
 
-class HostActivities extends Component {
+class HostHome extends Component {
   constructor(props) {
     super(props);
 
@@ -26,12 +26,13 @@ class HostActivities extends Component {
     const loginId = this.props.account.loginId;
 
     fetch(
-      `http://parkwayapi-env-2.eba-xgm5ffvk.us-east-2.elasticbeanstalk.com/activity_host/1`,
-      //`http://parkwayapi-env-2.eba-xgm5ffvk.us-east-2.elasticbeanstalk.com/activity_host/${loginId}`,
+      `http://parkwayapi-env-2.eba-xgm5ffvk.us-east-2.elasticbeanstalk.com/host_home/${loginId}`,
     )
       .then(response => response.json())
       .then(Responsejson => {
-        this.setState({responsedata: Responsejson});
+        this.setState({
+          responsedata: Responsejson,
+        });
       })
       .catch(error => console.error(error))
       .finally(() => {
@@ -52,12 +53,11 @@ class HostActivities extends Component {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
+            SdID: this.state.SdID,
             SpotName: this.state.SpotName,
-            reserved_from: this.state.reserved_from,
-            reserved_to: this.state.reserved_to,
-            totalfee: this.state.totalfee,
             SpotAddress: this.state.SpotAddress,
             P_City: this.state.P_City,
+            parkingfeeperhour: this.state.parkingfeeperhour,
           }),
         },
       )
@@ -82,7 +82,7 @@ class HostActivities extends Component {
           console.log('data on booking page after hitting api: ', data);
 
           if (responseCode == 200) {
-            this.props.navigation.navigate('hactivitydetails', {data});
+            this.props.navigation.navigate('hostspotaval', {data});
           }
         });
     } catch (e) {
@@ -99,11 +99,10 @@ class HostActivities extends Component {
 
     const results = JSON.parse(responsedata.result);
 
-    console.log('Actual Response from api: ', results);
-
     return (
       <View>
-        <Text style={styles.appText}>Hosted Spot Reservations</Text>
+        <Text style={styles.appText}>My Spaces</Text>
+
         <View style={[styles.registrationDetails, {flexDirection: 'column'}]}>
           {isLoading ? (
             <ActivityIndicator />
@@ -113,25 +112,23 @@ class HostActivities extends Component {
               keyExtractor={({id}, index) => id}
               renderItem={({item}) => (
                 <View style={styles.item}>
-                  <Text style={styles.item}>Spot Name: {item.SpotName} </Text>
-                  <Text style={styles.item}>Date: {item.reserved_from}</Text>
+                  <Text style={styles.item}>Spot Name: {item.SpotName}</Text>
                   <CustomButton
                     title="View Details"
                     functionOnClick={() => {
                       this.setState(
                         {
+                          SdID: item.SdID,
                           SpotName: item.SpotName,
-                          reserved_from: item.reserved_from,
-                          reserved_to: item.reserved_to,
-                          totalfee: item.totalfee,
                           SpotAddress: item.SpotAddress,
                           P_City: item.P_City,
+                          parkingfeeperhour: item.parkingfeeperhour,
                         },
                         () => {
                           this.postData({item});
                         },
                       );
-                      //this.props.navigation.navigate('activitydetails');
+                      //this.props.navigation.navigate('hostspotaval');
                       //this.props.navigation.navigate('tabScreen');
                     }}
                   />
@@ -192,11 +189,10 @@ const styles = StyleSheet.create({
     color: 'rgba(69,145,130,10)',
   },
 });
-
 const mapStateToProps = state => ({
   account: state.account,
 });
 export default connect(
   mapStateToProps,
   null,
-)(HostActivities);
+)(HostHome);

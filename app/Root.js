@@ -28,6 +28,10 @@ import SubSpotDetails from './screen/SubSpotDetails';
 import HostActivities from './screen/HostActivities';
 import HActivityDetails from './screen/HActivityDetails';
 import HowParkWayWorks from './screen/HowParkWayWorks';
+import HostHome from './screen/HostHome';
+import HostSpotAval from './screen/HostSpotAval';
+import EnterAvailability from './screen/EnterAvailability';
+import ViewAvailability from './screen/ViewAvailability';
 
 /* const bottomTab2 = createMaterialBottomTabNavigator(
   {
@@ -106,6 +110,10 @@ const stack = createStackNavigator(
     hostactivities: {screen: HostActivities},
     hactivitydetails: {screen: HActivityDetails},
     howparkwayworks: {screen: HowParkWayWorks},
+    hosthome: {screen: HostHome},
+    hostspotaval: {screen: HostSpotAval},
+    enteravailability: {screen: EnterAvailability},
+    viewavailability: {screen: ViewAvailability},
   },
   {
     initialRouteName: 'welcome',

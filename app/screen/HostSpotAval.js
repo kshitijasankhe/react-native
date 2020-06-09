@@ -8,6 +8,8 @@ import {
   ImageBackground,
   Button,
   TouchableOpacity,
+  ActivityIndicator,
+  FlatList,
 } from 'react-native';
 
 import {
@@ -24,64 +26,39 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import CustomButton from '../components/Button';
 //import CustomTextInput from '../components/TextInput';
+import call from 'react-native-phone-call';
 
-class SpotDetails extends React.Component {
+class HostSpotAval extends React.Component {
   constructor(props) {
     super(props);
+    const params = this.props.navigation.state.params;
+
     this.state = {
-      SpotID: '',
-      SpotName: '',
-      ParkingFeePerHour: '',
+      responsedata: params.data,
       isLoading: true,
     };
   }
 
-  handlePicker = datetime => {
-    const whichPicker = this.state.whichPicker;
-    if (whichPicker == 'checkin') {
-      this.setState({
-        isVisible: false,
-        AvailStartDateTime: moment(datetime).format('MMMM, Do YYYY HH:mm'),
-      });
-    } else {
-      this.setState({
-        isVisible: false,
-        AvailEndDateTime: moment(datetime).format('MMMM, Do YYYY HH:mm'),
-      });
-    }
-  };
-
-  hidePicker = () => {
-    this.setState({
-      isVisible: false,
-    });
-  };
-
-  showPicker = param => {
-    this.setState({
-      isVisible: true,
-      whichPicker: param,
-    });
-  };
-
-  componentDidMount() {
+  /*componentDidMount() {
     fetch(
-      'http://parkwayapi-env-2.eba-xgm5ffvk.us-east-2.elasticbeanstalk.com/host_further',
+      'https://5e991ed75eabe7001681c770.mockapi.io/search_spot/spotId/calculatePrice',
     )
       .then(response => response.json())
       .then(Responsejson => {
-        this.setState({responsedata: Responsejson});
+        this.setState({
+          data: Responsejson.result,
+        });
       })
       .catch(error => console.error(error))
       .finally(() => {
         this.setState({isLoading: false});
       });
-  }
+  }*/
 
   postData = () => {
     try {
       fetch(
-        'http://parkwayapi-env-2.eba-xgm5ffvk.us-east-2.elasticbeanstalk.com/spot_description',
+        'http://parkwayapi-env-2.eba-xgm5ffvk.us-east-2.elasticbeanstalk.com/booking',
         {
           //fetch('http://10.0.0.153:5000/login', {
           method: 'POST',
@@ -91,34 +68,47 @@ class SpotDetails extends React.Component {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            SpotID: this.state.SpotID,
+            SdID: this.state.SdID,
             SpotName: this.state.SpotName,
-            ParkingFeePerHour: this.state.ParkingFeePerHour,
+            SpotAddress: this.state.SpotAddress,
+            P_City: this.state.P_City,
+            parkingfeeperhour: this.state.parkingfeeperhour,
           }),
         },
-      ).then(response => {
-        const statusCode = response.status;
-
-        if (statusCode === 500) {
+      )
+        .then(response => {
+          const statusCode = response.status;
+          const promiseofdata = response.json();
+          return Promise.all([statusCode, promiseofdata]);
+          /* if (statusCode === 500) {
           Toast.show('Something went wrong we are looking into it!');
         } else if (statusCode === 200) {
-          Toast.show('Your parking spot registered Successfully');
+          Toast.show('Registered Successfully');
           this.props.navigation.navigate('tabScreen');
         } else if (statusCode === 400) {
           Toast.show('Invalid user credentials');
         } else {
           Toast.show('Something went terribly wrong.....we are on it!');
-        }
-      });
+        } */
+        })
+        .then(res => {
+          const responseCode = res[0];
+          const data = res[1];
+          console.log('data on booking page after hitting api: ', data);
+
+          if (responseCode == 200) {
+            this.props.navigation.navigate('enteravailability', {data});
+          }
+        });
     } catch (e) {
       console.log(e);
     }
   };
 
-  /*postData = () => {
+  postData1 = () => {
     try {
       fetch(
-        'http://parkwayapi-env-2.eba-xgm5ffvk.us-east-2.elasticbeanstalk.com/host_spot',
+        'http://parkwayapi-env-2.eba-xgm5ffvk.us-east-2.elasticbeanstalk.com/view_availabilty',
         {
           //fetch('http://10.0.0.153:5000/login', {
           method: 'POST',
@@ -128,98 +118,100 @@ class SpotDetails extends React.Component {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            hid: this.state.hid,
-            pcity: this.state.pcity,
-            sAddress: this.state.sAddress,
-            pstate: this.state.pstate,
-            pcountry: this.state.pcountry,
-            pzcode: this.state.pzcode,
+            SdID: this.state.SdID,
           }),
         },
-      ).then(response => {
-        const statusCode = response.status;
-
-        if (statusCode === 500) {
+      )
+        .then(response => {
+          const statusCode = response.status;
+          const promiseofdata = response.json();
+          return Promise.all([statusCode, promiseofdata]);
+          /* if (statusCode === 500) {
           Toast.show('Something went wrong we are looking into it!');
         } else if (statusCode === 200) {
-          Toast.show('Your parking spot registered Successfully');
+          Toast.show('Registered Successfully');
           this.props.navigation.navigate('tabScreen');
         } else if (statusCode === 400) {
           Toast.show('Invalid user credentials');
         } else {
           Toast.show('Something went terribly wrong.....we are on it!');
-        }
-      });
+        } */
+        })
+        .then(res => {
+          const responseCode = res[0];
+          const data = res[1];
+          console.log('data on booking page after hitting api: ', data);
+
+          if (responseCode == 200) {
+            this.props.navigation.navigate('viewavailability', {data});
+          }
+        });
     } catch (e) {
       console.log(e);
     }
-  };*/
+  };
 
   render() {
-    const {responsedata, isLoading} = this.state;
+    const {responsedata, data, isLoading} = this.state;
 
     if (!responsedata) {
       return <Text>Loading</Text>;
     }
 
-    const results = JSON.parse(responsedata.result);
-
     return (
-      <ImageBackground
-        source={require('../assets/parkwayRegistration.jpg')}
-        style={styles.backgroundImage}>
-        <View style={styles.registrationDetails}>
-          <Text style={styles.appText}>Some details for the parking spots</Text>
+      <View style={[styles.registrationDetails, {flexDirection: 'column'}]}>
+        <View style={styles.item}>
+          <Text style={styles.appText}>Spot Details</Text>
 
-          <TextInput
-            placeholder="SpotName"
-            style={styles.input}
-            value={this.state.SpotName}
-            onChangeText={text => {
-              this.setState({SpotName: text});
-            }}
-          />
-
-          <TextInput
-            placeholder="Fee per hour"
-            style={styles.input}
-            value={this.state.ParkingFeePerHour}
-            onChangeText={text => {
-              this.setState({ParkingFeePerHour: text});
-            }}
-          />
+          <Text style={styles.item}>Spot Name: {responsedata.SpotName}</Text>
+          <Text style={styles.item}>
+            Price per hour:${responsedata.parkingfeeperhour}{' '}
+          </Text>
+          <Text style={styles.item}>Address: {responsedata.SpotAddress}</Text>
+          <Text style={styles.item}>City:{responsedata.P_City}</Text>
 
           <View style={styles.container}>
             <View>
               <CustomButton
-                title="Register Parking spot"
+                title="Enter Availability"
                 functionOnClick={() => {
                   this.setState(
                     {
-                      SpotID: results,
+                      SdID: responsedata.SdID,
+                      SpotName: responsedata.SpotName,
+                      SpotAddress: responsedata.SpotAddress,
+                      P_City: responsedata.P_City,
+                      parkingfeeperhour: responsedata.parkingfeeperhour,
                     },
                     () => {
-                      this.postData();
+                      this.postData({responsedata});
                     },
                   );
-                  this.props.navigation.navigate('hosthome');
+                  //this.props.navigation.navigate('enteravailability');
                   //this.props.navigation.navigate('tabScreen');
                 }}
               />
             </View>
             <View>
               <CustomButton
-                title="Add another spot"
+                title="View Availability"
                 functionOnClick={() => {
-                  this.postData();
-                  this.props.navigation.navigate('subspotdetails');
+                  this.setState(
+                    {
+                      SdID: responsedata.SdID,
+                    },
+                    () => {
+                      this.postData1({responsedata});
+                    },
+                  );
+                  //this.props.navigation.navigate('viewavailability');
                   //this.props.navigation.navigate('tabScreen');
                 }}
               />
             </View>
           </View>
         </View>
-      </ImageBackground>
+      </View>
     );
   }
 }
@@ -232,9 +224,6 @@ const styles = StyleSheet.create({
   },
 
   registrationDetails: {
-    width: '80%',
-    height: '80%',
-    backgroundColor: 'rgba(255,255,255,.7)',
     alignSelf: 'center',
     justifyContent: 'center',
     padding: 20,
@@ -307,6 +296,20 @@ const styles = StyleSheet.create({
     paddingRight: 12,
     textAlign: 'right',
   },
+  buttonContainer: {
+    backgroundColor: '#8cc2c2',
+    paddingVertical: 10,
+  },
+
+  buttonText: {
+    textAlign: 'center',
+    color: '#FFF',
+  },
+
+  item: {
+    fontSize: 20,
+    padding: 10,
+  },
 });
 
-export default SpotDetails;
+export default HostSpotAval;

@@ -28,17 +28,18 @@ import CustomButton from '../components/Button';
 //import CustomTextInput from '../components/TextInput';
 import call from 'react-native-phone-call';
 
-class PrePaymentPage extends React.Component {
+class HActivityDetails extends React.Component {
   constructor(props) {
     super(props);
+    const params = this.props.navigation.state.params;
 
     this.state = {
-      data: [],
+      responsedata: params.data,
       isLoading: true,
     };
   }
 
-  componentDidMount() {
+  /*componentDidMount() {
     fetch(
       'https://5e991ed75eabe7001681c770.mockapi.io/search_spot/spotId/calculatePrice',
     )
@@ -52,46 +53,43 @@ class PrePaymentPage extends React.Component {
       .finally(() => {
         this.setState({isLoading: false});
       });
-  }
+  }*/
 
   render() {
-    const {data, isLoading} = this.state;
+    const {responsedata, data, isLoading} = this.state;
     const args = {
       number: '+14086462243', // String value with the number to call
       prompt: true, // Optional boolean property. Determines if the user should be prompt prior to the call
     };
 
+    if (!responsedata) {
+      return <Text>Loading</Text>;
+    }
+
     return (
       <View style={[styles.registrationDetails, {flexDirection: 'column'}]}>
-        {isLoading ? (
-          <ActivityIndicator />
-        ) : (
-          <FlatList
-            data={data}
-            keyExtractor={({id}, index) => id}
-            renderItem={({item}) => (
-              <View style={styles.item}>
-                <Text style={styles.appText}>Hosted Spot Details</Text>
-                <Text style={styles.item}>Start Date: </Text>
-                <Text style={styles.item}>Start Time: </Text>
-                <Text style={styles.item}>End Date: </Text>
-                <Text style={styles.item}>End Time: </Text>
-                <Text style={styles.item}>Spot Name: </Text>
-                <Text style={styles.item}>
-                  Total Price:{item.calculatedPrice}{' '}
-                </Text>
-                <Text style={styles.item}>Address:{item.address} </Text>
-                <CustomButton
-                  title="Contact Support"
-                  functionOnClick={() => {
-                    call(args).catch(console.error);
-                    //this.props.navigation.navigate('tabScreen');
-                  }}
-                />
-              </View>
-            )}
+        <View style={styles.item}>
+          <Text style={styles.appText}>Hosted Spot Reservation Details </Text>
+          <Text style={styles.item}>Spot Name: {responsedata.SpotName} </Text>
+          <Text style={styles.item}>
+            Start Date and Time: {responsedata.reserved_from}{' '}
+          </Text>
+          <Text style={styles.item}>
+            End Date and Time: {responsedata.reserved_to}
+          </Text>
+          <Text style={styles.item}>
+            Total Price: ${responsedata.totalfee}{' '}
+          </Text>
+          <Text style={styles.item}>Address:{responsedata.SpotAddress} </Text>
+          <Text style={styles.item}>City:{responsedata.P_City} </Text>
+          <CustomButton
+            title="Contact Support"
+            functionOnClick={() => {
+              call(args).catch(console.error);
+              //this.props.navigation.navigate('tabScreen');
+            }}
           />
-        )}
+        </View>
       </View>
     );
   }
@@ -188,4 +186,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PrePaymentPage;
+export default HActivityDetails;
